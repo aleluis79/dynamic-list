@@ -1,5 +1,5 @@
 <router-outlet />
-
+<!--
 <section>
     <app-autocomplete
       title="Números"
@@ -13,6 +13,27 @@
   <app-autocomplete
     title="Paises"
     (changeValue)="onChange($event)"
-    [optionFn]="comunSvc.getCountryOptions"
-/>
+    [optionFn]="comunSvc.getCountryOptions" />
 </section>
+-->
+
+<section>
+  <app-autocomplete
+    title="Otro"
+    (changeValue)="onChange($event)"
+    [optionFn]="getOptions"
+    [disabled]="tipoRequerimiento !== ''"
+    />
+</section>
+
+<app-dynamic-list [(items)]="this.items" [formStructure]="this.formStructure" />
+
+<br />
+@if (this.tipoRequerimiento !== '' && this.items.length > 0) {
+  <button mat-flat-button (click)="show()">show</button>
+}
+@if (this.tipoRequerimiento !== '') {
+  <button mat-flat-button (click)="reset()">reset</button>
+}
+
+

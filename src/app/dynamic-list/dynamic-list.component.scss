@@ -1,0 +1,13 @@
+.container {
+  width: 600px;
+}
+
+.displayName {
+  font-weight: bold;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between
+}

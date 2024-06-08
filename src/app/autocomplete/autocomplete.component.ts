@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, effect, input, output } from '@angular/core';
 import { FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, debounceTime, distinctUntilChanged, switchMap, of } from 'rxjs';
 import { OptionValue } from '../comun.service';
@@ -30,6 +30,8 @@ export class AutocompleteComponent {
 
   title = input.required<string>();
 
+  disabled = input<boolean>(false);
+
   optionFn = input.required<(args: string) => Observable<OptionValue[]>>();
 
   optionTopFn = input<() => Observable<OptionValue[]>>();
@@ -38,6 +40,20 @@ export class AutocompleteComponent {
 
   myControl = new FormControl('', [Validators.required, SelectionRequiredValidator]);
   filteredOptions?: Observable<OptionValue[]>;
+
+
+
+  constructor() {
+
+    effect(() => {
+      if (this.disabled()) {
+        this.myControl.disable();
+      } else {
+        this.myControl.enable();
+      }
+    })
+
+  }
 
   ngOnInit() {
     this.filteredOptions = this.myControl.valueChanges

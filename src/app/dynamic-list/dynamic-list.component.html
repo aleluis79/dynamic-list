@@ -1,0 +1,26 @@
+@if (this.formStructure() !== undefined && this.formStructure().length > 0) {
+  <section class="container">
+    @if (!this.itemNew && !this.itemEdit) {
+      <button mat-icon-button (click)="createItem()"><mat-icon>add</mat-icon></button>
+    }
+
+    @if (this.itemNew || this.itemEdit !== undefined) {
+      <app-dynamic-form [formStructure]="this.formStructure()" [initialData]="this.data" (submitForm)="process($event)" />
+    }
+
+    <hr>
+
+    @for (item of this.items(); track item.displayName) {
+      <div class="item">
+        <label class="displayName">{{item.displayName}}</label>
+        @if (!this.itemNew && !this.itemEdit) {
+          <div>
+            <button mat-icon-button (click)="editarItem(item)"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button (click)="removeItem(item)"><mat-icon>delete</mat-icon></button>
+          </div>
+        }
+      </div>
+    }
+
+  </section>
+}
