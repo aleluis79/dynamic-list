@@ -127,6 +127,27 @@ export class AppComponent {
       ]
     },
     {
+      "type": "text",
+      "label": "CBU",
+      "name": "cbu",
+      "value": "",
+      "validations": [
+        {
+          "validator": "required",
+          "message": "El CBU es requerido"
+        },
+        {
+          "validator": "pattern",
+          "value": "^[0-9]{22}$",
+          "message": "El CBU no es valido",
+        },
+        {
+          "validator": "cbu",
+          "message": "CBU error de verificación",
+        },
+      ]
+    },
+    {
       "type": "date",
       "label": "Fecha cuit",
       "name": "fechaCuit",
