@@ -47,10 +47,10 @@ export class AppComponent {
     this.tipoRequerimiento = event
     if (event == '1') {
       //setTimeout(() => this.formStructure = this.formStructure1, 100)
-      this.formStructure = this.formStructure1
+      this.formStructure = [...this.formStructure1]
     } else if (event == '2') {
       //setTimeout(() => this.formStructure = this.formStructure2, 100)
-      this.formStructure = this.formStructure2
+      this.formStructure = [...this.formStructure2]
     }
   }
 
@@ -83,10 +83,29 @@ export class AppComponent {
       "label": "Alias",
       "name": "displayName",
       "value": "",
+      "mask": "000.000.000",
       "validations": [
         {
           "validator": "required",
           "message": "El alias es requerido"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "IPP",
+      "name": "ipp",
+      "value": "",
+      "mask": "00-00000-0",
+      "validations": [
+        {
+          "validator": "required",
+          "message": "La IPP es requerido"
+        },
+        {
+          "validator": "pattern",
+          "value": "^[0-9]{8}$",
+          "message": "La IPP no es valida",
         }
       ]
     },
@@ -110,6 +129,7 @@ export class AppComponent {
       "label": "Cuil/Cuit",
       "name": "displayName",
       "value": "",
+      "mask": "00-00000000-0",
       "validations": [
         {
           "validator": "required",

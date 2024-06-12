@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmComponent } from '../confirm/confirm.component';
+import { NgxMaskPipe } from 'ngx-mask';
 
 @Component({
     selector: 'app-dynamic-list',
@@ -15,7 +16,8 @@ import { ConfirmComponent } from '../confirm/confirm.component';
       MatButtonModule,
       MatIconModule,
       DynamicFormComponent,
-      JsonPipe
+      JsonPipe,
+      NgxMaskPipe
     ]
 })
 export class DynamicListComponent {
@@ -65,6 +67,10 @@ export class DynamicListComponent {
     this.itemNew = false
     this.itemEdit = undefined
 
+  }
+
+  getMaskDisplayName(): string {
+    return this.formStructure().filter(c => c.name === 'displayName')[0].mask || ''
   }
 }
 

@@ -10,7 +10,8 @@
                   placeholder="{{control.label}}"
                   [type]="control.type"
                   [formControlName]="control.name"
-                  [required]="isRequired(control)">
+                  [required]="isRequired(control)"
+                  [mask]="control.mask">
             @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
               <mat-error>{{getErrorMessage(control)}}</mat-error>
             }

@@ -12,7 +12,13 @@
 
     @for (item of this.items(); track item.displayName) {
       <div class="item">
-        <label class="displayName">{{item.displayName}}</label>
+        <label class="displayName">
+          @if (getMaskDisplayName(); as mask) {
+            {{item.displayName | mask: mask}}
+          } @else {
+            {{item.displayName}}
+          }
+        </label>
         @if (!this.itemNew && !this.itemEdit) {
           <div>
             <button mat-icon-button (click)="editarItem(item)"><mat-icon>edit</mat-icon></button>

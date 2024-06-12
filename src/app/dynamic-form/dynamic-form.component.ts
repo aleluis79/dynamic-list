@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { HttpClient } from '@angular/common/http';
 import { debounceTime, distinctUntilChanged, switchMap, of, Subject, takeUntil } from 'rxjs';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -25,7 +26,8 @@ import { debounceTime, distinctUntilChanged, switchMap, of, Subject, takeUntil }
     MatRadioModule,
     MatDatepickerModule,
     MatCheckboxModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    NgxMaskDirective
   ],
   templateUrl: './dynamic-form.component.html',
   styleUrl: './dynamic-form.component.scss'
@@ -278,6 +280,7 @@ export interface IFormStructure {
   value: string | number | boolean | any;
   options?: IOption[];
   optionsFn?: string;
+  mask?: string;
   validations?: {
     validator: string;
     value?: string | number | boolean;
