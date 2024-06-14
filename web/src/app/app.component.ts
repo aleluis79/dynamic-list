@@ -47,7 +47,8 @@ export class AppComponent {
     this.tipoRequerimiento = event
     if (event == '1') {
       //setTimeout(() => this.formStructure = this.formStructure1, 100)
-      this.formStructure = [...this.formStructure1]
+      //this.formStructure = [...this.formStructure1]
+      this.comunSvc.getFormStructure().subscribe(data => this.formStructure = data)
     } else if (event == '2') {
       //setTimeout(() => this.formStructure = this.formStructure2, 100)
       this.formStructure = [...this.formStructure2]

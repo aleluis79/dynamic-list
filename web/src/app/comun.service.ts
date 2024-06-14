@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { IFormStructure } from './dynamic-form/dynamic-form.component';
 
 
 const options: OptionValue[] = [
@@ -47,6 +49,7 @@ const countryOptions: OptionValue[] = [
 })
 export class ComunService {
 
+  http = inject(HttpClient);
 
   getOptions(filter: string): Observable<OptionValue[]> {
     if (filter) {
@@ -70,6 +73,10 @@ export class ComunService {
 
   getCountryTopOptions(): Observable<OptionValue[]> {
     return of(countryOptions.slice(0, 3));
+  }
+
+  getFormStructure(): Observable<IFormStructure[]> {
+    return this.http.get<IFormStructure[]>('http://localhost:5000/Home/form');
   }
 }
 

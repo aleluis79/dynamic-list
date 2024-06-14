@@ -1,0 +1,10 @@
+{
+    "json.schemas": [
+      {
+        "fileMatch": [
+          "**/oficio*.json"
+        ],
+        "url": "./Forms/scheme.json"
+      }
+    ]
+}

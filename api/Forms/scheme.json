@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/product.schema.json",
+  "title": "Formulario",
+  "description": "Formulario configurable",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "description": "Tipo de control",
+        "type": "string",
+        "enum": ["text", "password", "number", "email", "textarea", "checkbox", "radio", "select", "autocomplete", "date", "daterange"]
+      },
+      "label": {
+        "description": "Texto a mostrar para el control",
+        "type": "string"
+      },
+      "name": {
+        "description": "Identificador único para el control",
+        "type": "string"
+      },
+      "value": {
+        "description": "Valor inicial para el control",
+        "type": ["string", "object"]
+      },
+      "mask": {
+        "description": "Mascara para el control",
+        "type": "string"
+      },
+      "validations": {
+        "description": "Validaciones para el control",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "validator": {
+              "description": "Nombre del validador",
+              "type": "string",
+              "enum": ["required", "email", "pattern", "minlength", "maxlength", "min", "max", "requiredTrue", "nullValidator", "selected", "cuit", "cbu", "cvu"]
+            },
+            "message": {
+              "description": "Mensaje a mostrar en caso de no pasar la validación",
+              "type": "string"
+            },
+            "value": {
+              "description": "Valor para el validator, por ejemplo pattern",
+              "type": "string"
+            }
+          },
+          "required": ["validator", "message"]
+        }
+      }
+    },
+    "required": [ "type", "label", "name" ]
+  }
+}

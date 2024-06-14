@@ -1,0 +1,57 @@
+[
+  {
+    "type": "text",
+    "label": "Alias",
+    "name": "displayName",
+    "value": "",
+    "mask": "000.000.000",
+    "validations": [
+      {
+        "validator": "required",
+        "message": "El alias es requerido"
+      }
+    ]
+  },
+  {
+    "type": "password",
+    "label": "Contraseña",
+    "name": "password",
+    "value": "",
+    "validations": [
+      {
+        "validator": "required",
+        "message": "La contraseña es requerida"
+      }
+    ]
+  },
+  {
+    "type": "text",
+    "label": "IPP",
+    "name": "ipp",
+    "value": "",
+    "mask": "00-00000-0",
+    "validations": [
+      {
+        "validator": "required",
+        "message": "La IPP es requerido"
+      },
+      {
+        "validator": "pattern",
+        "value": "^[0-9]{8}$",
+        "message": "La IPP no es valida"
+      }
+    ]
+  },
+  {
+    "type": "daterange",
+    "label": "Fecha Alias",
+    "name": "fechaAlias",
+    "value": "",
+    "validations": [
+      {
+        "validator": "required",
+        "message": "La fecha es requerida"
+      }
+    ]
+  }
+]
