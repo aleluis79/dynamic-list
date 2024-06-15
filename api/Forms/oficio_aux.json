@@ -1,0 +1,76 @@
+[
+    {
+      "type": "checkbox",
+      "label": "Otros1",
+      "name": "otros1",
+      "value": false
+    },
+    {
+      "type": "checkbox",
+      "label": "Otros2",
+      "name": "otros2",
+      "value": false
+    },
+    {
+      "type": "list",
+      "label": "Movimientos por rango de fechas",
+      "name": "movimientos",
+      "value": [],
+      "form": [
+        {
+          "type": "select",
+          "label": "Alias",
+          "name": "alias",
+          "value": "",
+          "options": [
+            {
+              "label": "ale.luis",
+              "value": "ale.luis"
+            },
+            {
+              "label": "pablo.fer",
+              "value": "pablo.fer"
+            }
+          ]
+        },
+        {
+          "type": "daterange",
+          "label": "Fecha Alias",
+          "name": "fechaAlias",
+          "value": "",
+          "validations": [
+            {
+              "validator": "required",
+              "message": "La fecha es requerida"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "label": "Frutas por rango de fechas",
+      "name": "frutas",
+      "value": [],
+      "form": [
+        {
+          "type": "text",
+          "label": "Fruta",
+          "name": "fruta",
+          "mask": "000.000.000",
+          "value": "",
+          "validations": [
+            {
+              "validator": "required",
+              "message": "La fecha es requerida"
+            },
+            {
+              "validator": "pattern",
+              "value": "^[0-9]{9}$",
+              "message": "La fruta no es valida"
+            }
+          ]
+        }
+      ]
+    }
+  ]

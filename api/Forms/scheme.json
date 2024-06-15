@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://example.com/product.schema.json",
+  "$id": "formularios",
   "title": "Formulario",
   "description": "Formulario configurable",
   "type": "array",
@@ -10,7 +10,7 @@
       "type": {
         "description": "Tipo de control",
         "type": "string",
-        "enum": ["text", "password", "number", "email", "textarea", "checkbox", "radio", "select", "autocomplete", "date", "daterange"]
+        "enum": ["text", "password", "number", "email", "textarea", "checkbox", "radio", "select", "autocomplete", "date", "daterange", "list"]
       },
       "label": {
         "description": "Texto a mostrar para el control",
@@ -22,11 +22,19 @@
       },
       "value": {
         "description": "Valor inicial para el control",
-        "type": ["string", "object"]
+        "type": ["string", "object", "number", "boolean", "array"]
       },
       "mask": {
         "description": "Mascara para el control",
         "type": "string"
+      },
+      "form": {
+        "$ref": "#",
+        "description": "Formularios anidados",
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
       },
       "validations": {
         "description": "Validaciones para el control",
