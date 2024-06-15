@@ -8,8 +8,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { ComunService } from './comun.service';
 import { of } from 'rxjs';
-import { DynamicListComponent } from './dynamic-list/dynamic-list.component';
-import { IFormStructure } from './dynamic-form/dynamic-form.component';
+import { DynamicFormComponent, IFormStructure } from './dynamic-form/dynamic-form.component';
 
 @Component({
     selector: 'app-root',
@@ -26,7 +25,7 @@ import { IFormStructure } from './dynamic-form/dynamic-form.component';
         MatAutocompleteModule,
         FormsModule,
         ReactiveFormsModule,
-        DynamicListComponent
+        DynamicFormComponent
     ]
 })
 export class AppComponent {
@@ -41,14 +40,16 @@ export class AppComponent {
 
   tipoRequerimiento = ''
 
+  initialData = {"otros1":true,"otros2":false,"movimientos":[{"alias":"ale.luis","fechaAlias":{"start":"2024-06-15T03:00:00.000Z","end":"2024-06-16T03:00:00.000Z"}}],"frutas":[{"fruta":"333333333"},{"fruta":"444444444"}]}
+
   onChange(event: string) {
     this.items = []
     this.formStructure = []
     this.tipoRequerimiento = event
     if (event == '1') {
       //setTimeout(() => this.formStructure = this.formStructure1, 100)
-      //this.formStructure = [...this.formStructure1]
-      this.comunSvc.getFormStructure().subscribe(data => this.formStructure = data)
+      this.formStructure = [...this.formStructure1]
+      //this.comunSvc.getFormStructure().subscribe(data => this.formStructure = data)
     } else if (event == '2') {
       //setTimeout(() => this.formStructure = this.formStructure2, 100)
       this.formStructure = [...this.formStructure2]
@@ -77,6 +78,87 @@ export class AppComponent {
     this.formStructure = []
     this.tipoRequerimiento = ''
   }
+
+  process(item: any) {
+
+  }
+
+  formAux = [
+    {
+      "type": "checkbox",
+      "label": "Otros1",
+      "name": "otros1",
+      "value": false
+    },
+    {
+      "type": "checkbox",
+      "label": "Otros2",
+      "name": "otros2",
+      "value": false
+    },
+    {
+      "type": "list",
+      "label": "Movimientos por rango de fechas",
+      "name": "movimientos",
+      "value": [],
+      "form": [
+        {
+          "type": "select",
+          "label": "Alias",
+          "name": "alias",
+          "value": "",
+          "options": [
+            {
+              "label": "ale.luis",
+              "value": "ale.luis"
+            },
+            {
+              "label": "pablo.fer",
+              "value": "pablo.fer"
+            }
+          ]
+        },
+        {
+          "type": "daterange",
+          "label": "Fecha Alias",
+          "name": "fechaAlias",
+          "value": "",
+          "validations": [
+            {
+              "validator": "required",
+              "message": "La fecha es requerida"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "label": "Frutas por rango de fechas",
+      "name": "frutas",
+      "value": [],
+      "form": [
+        {
+          "type": "text",
+          "label": "Fruta",
+          "name": "fruta",
+          "mask": "000.000.000",
+          "value": "",
+          "validations": [
+            {
+              "validator": "required",
+              "message": "La fecha es requerida"
+            },
+            {
+              "validator": "pattern",
+              "value": "^[0-9]{9}$",
+              "message": "La fruta no es valida",
+            }
+          ]
+        }
+      ]
+    }
+  ]
 
   formStructure1 = [
     {

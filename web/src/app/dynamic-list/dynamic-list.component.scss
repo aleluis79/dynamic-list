@@ -1,13 +1,12 @@
 .container {
-  width: 600px;
+  width: 800px;
 }
 
-.displayName {
-  font-weight: bold;
+table {
+  width: 100%;
+  background-color: #eee;
 }
 
-.item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between
+table td:last-child {
+  text-align: right;
 }

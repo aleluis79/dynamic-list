@@ -1,32 +1,40 @@
 @if (this.formStructure() !== undefined && this.formStructure().length > 0) {
   <section class="container">
-    @if (!this.itemNew && !this.itemEdit) {
-      <button mat-icon-button (click)="createItem()"><mat-icon>add</mat-icon></button>
-    }
 
-    @if (this.itemNew || this.itemEdit !== undefined) {
-      <app-dynamic-form [formStructure]="this.formStructure()" [initialData]="this.data" (submitForm)="process($event)" />
-    }
+    <p><mat-checkbox [checked]="controlCheck" (change)="changeCheck()">Movimientos</mat-checkbox></p>
+    @if (controlCheck) {
 
-    <hr>
+      @if (!this.itemNew && !this.itemEdit) {
+        <button type="button" mat-icon-button (click)="createItem()"><mat-icon>add</mat-icon></button>
+      }
 
-    @for (item of this.items(); track item.displayName) {
-      <div class="item">
-        <label class="displayName">
-          @if (getMaskDisplayName(); as mask) {
-            {{item.displayName | mask: mask}}
-          } @else {
-            {{item.displayName}}
-          }
-        </label>
-        @if (!this.itemNew && !this.itemEdit) {
-          <div>
-            <button mat-icon-button (click)="editarItem(item)"><mat-icon>edit</mat-icon></button>
-            <button mat-icon-button (click)="removeItem(item)"><mat-icon>delete</mat-icon></button>
-          </div>
+      @if (this.itemNew || this.itemEdit !== undefined) {
+        <app-dynamic-form [formStructure]="this.formStructure()" [initialData]="this.data" (submitForm)="process($event)" />
+      }
+
+      <table>
+        @for (item of this.items(); track index; let index = $index) {
+          <tr>
+            @for(header of getHeaders(); track header) {
+              <td>
+                @if (getMask(header); as mask) {
+                  {{getValueDescription(item, header) | mask: mask}}
+                } @else {
+                  {{getValueDescription(item, header)}}
+                }
+              </td>
+            }
+            <td>
+              @if (!this.itemNew && !this.itemEdit) {
+                <div>
+                  <button mat-icon-button (click)="editarItem(item)"><mat-icon>edit</mat-icon></button>
+                  <button mat-icon-button (click)="removeItem(item)"><mat-icon>delete</mat-icon></button>
+                </div>
+              }
+            </td>
+          </tr>
         }
-      </div>
+      </table>
     }
-
   </section>
 }

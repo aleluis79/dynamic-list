@@ -12,6 +12,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { HttpClient } from '@angular/common/http';
 import { debounceTime, distinctUntilChanged, switchMap, of, Subject, takeUntil } from 'rxjs';
 import { NgxMaskDirective } from 'ngx-mask';
+import { DynamicListComponent } from '../dynamic-list/dynamic-list.component';
+import { D } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -27,7 +29,8 @@ import { NgxMaskDirective } from 'ngx-mask';
     MatDatepickerModule,
     MatCheckboxModule,
     MatAutocompleteModule,
-    NgxMaskDirective
+    NgxMaskDirective,
+    DynamicListComponent
   ],
   templateUrl: './dynamic-form.component.html',
   styleUrl: './dynamic-form.component.scss'
@@ -38,13 +41,15 @@ export class DynamicFormComponent {
 
   formStructure = input.required<IFormStructure[]>({alias: 'formStructure'});
 
-  initialData = input<object | undefined>(undefined, {alias: 'initialData'});
+  initialData = input.required<object | undefined>({alias: 'initialData'});
 
   urlApi = input<string>('', {alias: 'urlApi'});
 
   dataResult = output<any>({alias: 'submitForm'});
 
   dynamicForm!: FormGroup
+
+  lists : { [key: string]: any[] } = {}
 
   formBuilder = inject(FormBuilder)
 
@@ -117,7 +122,14 @@ export class DynamicFormComponent {
             }
 
           } else {
-            formGroup[control.name] = [control.value || '', controlValidators];
+            if (control.type !== 'list') {
+              formGroup[control.name] = [control.value == undefined ? '' : control.value, controlValidators];
+            }
+          }
+
+
+          if (control.type === 'list') {
+            this.lists[control.name] = []
           }
 
         });
@@ -148,6 +160,12 @@ export class DynamicFormComponent {
 
   }
 
+  getData(name: string): any {
+    const data =  this.initialData() as any
+    const dataArray = data[name]
+    return dataArray
+  }
+
   getRange(name: string) {
     return this.dynamicForm.get(name)! as FormGroup
   }
@@ -159,8 +177,8 @@ export class DynamicFormComponent {
 
   onSubmit() {
     if (this.dynamicForm.valid) {
-      const data = {...this.dynamicForm.value};
-      console.log(data)
+      const data = {...this.dynamicForm.value, ...this.lists};
+      console.log(JSON.stringify(data))
       this.dataResult.emit(data);
     } else {
       this.dynamicForm.markAllAsTouched();
@@ -281,6 +299,7 @@ export interface IFormStructure {
   options?: IOption[];
   optionsFn?: string;
   mask?: string;
+  form?: IFormStructure[];
   validations?: {
     validator: string;
     value?: string | number | boolean;

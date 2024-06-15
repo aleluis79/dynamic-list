@@ -124,6 +124,14 @@
           </mat-form-field>
         }
 
+
+        @if (['list'].includes(control.type)) {
+          @defer() {
+              <app-dynamic-list [(items)]="lists[control.name]" [initialData]="getData(control.name)" [formStructure]="control.form!" />
+          }
+
+        }
+
       </div>
     }
     <div class="button-container">

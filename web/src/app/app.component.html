@@ -16,7 +16,7 @@
     [optionFn]="comunSvc.getCountryOptions" />
 </section>
 -->
-
+<!--
 <section>
   <app-autocomplete
     title="Otro"
@@ -35,5 +35,6 @@
 @if (this.tipoRequerimiento !== '') {
   <button mat-flat-button (click)="reset()">reset</button>
 }
+-->
 
-
+<app-dynamic-form [formStructure]="this.formAux" [initialData]="this.initialData" (submitForm)="process($event)" />
