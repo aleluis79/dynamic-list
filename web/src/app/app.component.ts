@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ComunService } from './comun.service';
 import { of } from 'rxjs';
 import { DynamicFormComponent, IFormStructure } from './dynamic-form/dynamic-form.component';
+import { DynamicFormService } from './dynamic-form/dynamic-form.service';
 
 @Component({
     selector: 'app-root',
@@ -41,6 +42,12 @@ export class AppComponent {
   tipoRequerimiento = ''
 
   initialData = {"otros1":true,"otros2":false,"movimientos":[{"alias":"ale.luis","fechaAlias":{"start":"2024-06-15T03:00:00.000Z","end":"2024-06-16T03:00:00.000Z"}}],"frutas":[{"fruta":"333333333"},{"fruta":"444444444"}]}
+
+  dynamicFormService = inject(DynamicFormService)
+
+  constructor() { 
+    this.dynamicFormService.addCollection('alias', [{"label": "ale.luis.123","value": "ale.luis.123"}, {"label": "pablo.fer.123","value": "pablo.fer.123"}])
+  }
 
   onChange(event: string) {
     this.items = []
@@ -107,16 +114,7 @@ export class AppComponent {
           "label": "Alias",
           "name": "alias",
           "value": "",
-          "options": [
-            {
-              "label": "ale.luis",
-              "value": "ale.luis"
-            },
-            {
-              "label": "pablo.fer",
-              "value": "pablo.fer"
-            }
-          ],
+          "optionsVar": "alias",
           "validations": [
             {
               "validator": "required",

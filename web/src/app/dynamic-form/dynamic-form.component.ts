@@ -13,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 import { debounceTime, distinctUntilChanged, switchMap, of, Subject, takeUntil } from 'rxjs';
 import { NgxMaskDirective } from 'ngx-mask';
 import { DynamicListComponent } from '../dynamic-list/dynamic-list.component';
+import { DynamicFormService } from './dynamic-form.service';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -53,6 +54,8 @@ export class DynamicFormComponent {
   formBuilder = inject(FormBuilder)
 
   http = inject(HttpClient)
+
+  dynamicFormService = inject(DynamicFormService)
 
   constructor() {
 
@@ -96,10 +99,14 @@ export class DynamicFormComponent {
             control.value = ''
           }
 
-          if (control.optionsFn && control.type === 'select') {
-            this.http.get<IOption[]>(`${this.urlApi()}/${control.optionsFn}`).subscribe(items =>
+          if (control.optionsRest && control.type === 'select') {
+            this.http.get<IOption[]>(`${this.urlApi()}/${control.optionsRest}`).subscribe(items =>
               control.options = items
             )
+          }
+
+          if (control.optionsVar && control.type === 'select') {
+            control.options = this.dynamicFormService.getCollection(control.optionsVar)
           }
 
           if (control.type === 'daterange') {
@@ -136,7 +143,7 @@ export class DynamicFormComponent {
         this.dynamicForm = this.formBuilder.group(formGroup);
 
         formStructure.forEach(control => {
-          if (control.optionsFn && control.type === 'autocomplete') {
+          if (control.optionsRest && control.type === 'autocomplete') {
             this.dynamicForm.get(control.name)?.valueChanges
             .pipe(
               takeUntil(this.$destroy),
@@ -144,7 +151,7 @@ export class DynamicFormComponent {
               distinctUntilChanged(),
               switchMap(value => {
                 if ((value || '')?.length >= 3) {
-                  return this.http.get<IOption[]>(`${this.urlApi()}/${control.optionsFn}/${value}`)
+                  return this.http.get<IOption[]>(`${this.urlApi()}/${control.optionsRest}/${value}`)
                 } else {
                   return of([])
                 }
@@ -296,7 +303,8 @@ export interface IFormStructure {
   name: string;
   value: string | number | boolean | any;
   options?: IOption[];
-  optionsFn?: string;
+  optionsRest?: string;
+  optionsVar?: string;
   mask?: string;
   form?: IFormStructure[];
   validations?: {
