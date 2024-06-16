@@ -24,6 +24,32 @@
         "description": "Valor inicial para el control",
         "type": ["string", "object", "number", "boolean", "array"]
       },
+      "options": {
+        "description": "Opciones para el control, si es un select, autocomplete o radio",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "description": "Texto a mostrar para la opcion",
+              "type": "string"
+            },
+            "value": {
+              "description": "Valor para la opcion",
+              "type": "string"
+            }
+          },
+          "required": ["label", "value"]
+        }
+      },
+      "optionsRest": {
+        "description": "Nombre del endpoint para obtener las opciones",
+        "type": "string"
+      },
+      "optionsVar": {
+        "description": "Nombre de la variable que contiene las opciones en la coleccion de datos del componente",
+        "type": "string"
+      },
       "mask": {
         "description": "Mascara para el control",
         "type": "string"

@@ -156,7 +156,7 @@ export class AppComponent {
             {
               "validator": "pattern",
               "value": "^[0-9]{9}$",
-              "message": "La fruta no es valida",
+              "message": "La fruta no es valida"
             }
           ]
         }
