@@ -1,0 +1,4 @@
+<h1 mat-dialog-title>{{this.data.title}}</h1>
+<mat-dialog-content>
+    <app-dynamic-form [formStructure]="this.data.formStructure" [initialData]="this.data.initialData" (submitForm)="process($event)" />
+</mat-dialog-content>

@@ -116,6 +116,12 @@ export class AppComponent {
               "label": "pablo.fer",
               "value": "pablo.fer"
             }
+          ],
+          "validations": [
+            {
+              "validator": "required",
+              "message": "El alias es requerido"
+            }
           ]
         },
         {
@@ -134,7 +140,7 @@ export class AppComponent {
     },
     {
       "type": "list",
-      "label": "Frutas por rango de fechas",
+      "label": "Frutas",
       "name": "frutas",
       "value": [],
       "form": [

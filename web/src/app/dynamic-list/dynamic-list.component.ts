@@ -7,6 +7,7 @@ import { ConfirmComponent } from '../confirm/confirm.component';
 import { NgxMaskPipe } from 'ngx-mask';
 import { DynamicFormComponent, IFormStructure } from '../dynamic-form/dynamic-form.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { AddItemComponent } from '../add-item/add-item.component';
 
 @Component({
     selector: 'app-dynamic-list',
@@ -14,7 +15,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     templateUrl: './dynamic-list.component.html',
     styleUrl: './dynamic-list.component.scss',
     providers: [
-        DatePipe
+        DatePipe,
+        NgxMaskPipe
     ],
     imports: [
         MatButtonModule,
@@ -33,17 +35,19 @@ export class DynamicListComponent {
 
   initialData = model<object | undefined>(undefined, {alias: 'initialData'});
 
+  label = input.required<string>({alias: 'label'})
+
   controlCheck = false
 
   data?: any = []
 
   itemEdit?: any
 
-  itemNew = false
-
   dialog = inject(MatDialog)
 
   datePipe = inject(DatePipe)
+
+  maskPipe = inject(NgxMaskPipe)
 
   constructor() {
     effect(() =>  {  
@@ -79,22 +83,53 @@ export class DynamicListComponent {
     this.controlCheck = !this.controlCheck
     if (!this.controlCheck) {
       this.data = undefined
-      this.itemNew = false
       this.itemEdit = undefined
       this.items.set([])
       this.initialData.set(undefined)
     }
   }
 
-  createItem() {
+  createItem() {    
     this.data = undefined
-    this.itemNew = true
+    //this.itemNew = true
+
+    const formStructure = this.formStructure()
+    const initialData = this.data
+
+    const dialogRef = this.dialog.open(AddItemComponent, {
+      minWidth: '700px',
+      data: {
+        formStructure,
+        initialData,
+        title: 'Alta de ' + this.label().toLowerCase()
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        this.process(result)
+      }
+    });
+
+
+
   }
 
   removeItem(item: any) {
-    this.dialog.open(ConfirmComponent, {
-      data: `¿Desea borrar el item?`
-    }).afterClosed().subscribe(result => {
+
+    const header = this.getHeaders()[0]
+    let titulo = this.getValueDescription(item, header)
+    const mask = this.getMask(header)
+    if (mask) {
+      titulo = this.maskPipe.transform(titulo, mask)
+    }
+
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      data: `¿Desea borrar el item ${titulo}?`
+    })
+    
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const itemsSinBorrar = this.items().filter(i => i !== item)
         if (itemsSinBorrar.length === 0) {
@@ -108,6 +143,27 @@ export class DynamicListComponent {
   editarItem(item: any) {
     this.data = item
     this.itemEdit = item
+
+    const formStructure = this.formStructure()
+    const initialData = this.data
+
+    const dialogRef = this.dialog.open(AddItemComponent, {
+      minWidth: '700px',
+      data: {
+        formStructure,
+        initialData,
+        title: 'Modificación de ' + this.label().toLowerCase()
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        this.process(result)
+      }
+    });
+
+
   }
 
   process(item: any) {
@@ -118,12 +174,9 @@ export class DynamicListComponent {
         this.items().push(item)
       }
     }
-
-    this.itemNew = false
     this.itemEdit = undefined
     this.data = undefined
 
-  }
+  }  
 
 }
-
