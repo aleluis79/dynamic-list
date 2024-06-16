@@ -1,10 +1,9 @@
 @if (this.formStructure() !== undefined && this.formStructure().length > 0) {
   <section class="container">
 
-    <p><mat-checkbox [checked]="controlCheck" (change)="changeCheck()">{{ label() }}</mat-checkbox></p>
+    <p><mat-checkbox [checked]="controlCheck" (change)="changeCheck($event)">{{ label() }}</mat-checkbox></p>
     @if (controlCheck) {
       <button type="button" mat-icon-button (click)="createItem()"><mat-icon>add</mat-icon></button>
-
       <table>
         @for (item of this.items(); track index; let index = $index) {
           <tr>

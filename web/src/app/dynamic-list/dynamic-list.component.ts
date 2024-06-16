@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmComponent } from '../confirm/confirm.component';
 import { NgxMaskPipe } from 'ngx-mask';
 import { DynamicFormComponent, IFormStructure } from '../dynamic-form/dynamic-form.component';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { AddItemComponent } from '../add-item/add-item.component';
 
 @Component({
@@ -79,14 +79,31 @@ export class DynamicListComponent {
     return this.formStructure().filter(c => c.name === key)[0].mask || ''
   }
 
-  changeCheck() {
-    this.controlCheck = !this.controlCheck
-    if (!this.controlCheck) {
-      this.data = undefined
-      this.itemEdit = undefined
-      this.items.set([])
-      this.initialData.set(undefined)
+  changeCheck(e: MatCheckboxChange) {
+
+    if (this.controlCheck && this.items().length > 0) {
+
+      const dialogRef = this.dialog.open(ConfirmComponent, {
+        data: `¿Seguro que desea borrar la lista de ${this.label().toLowerCase()}?`
+      })
+      
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.controlCheck = !this.controlCheck
+          if (!this.controlCheck) {
+            this.data = undefined
+            this.itemEdit = undefined
+            this.items.set([])
+            this.initialData.set(undefined)
+          }
+        } else {
+          e.source.checked = true
+        }
+      })
+    } else {
+      this.controlCheck = !this.controlCheck
     }
+
   }
 
   createItem() {    

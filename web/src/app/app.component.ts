@@ -41,7 +41,8 @@ export class AppComponent {
 
   tipoRequerimiento = ''
 
-  initialData = {"otros1":true,"otros2":false,"movimientos":[{"alias":"ale.luis","fechaAlias":{"start":"2024-06-15T03:00:00.000Z","end":"2024-06-16T03:00:00.000Z"}}],"frutas":[{"fruta":"333333333"},{"fruta":"444444444"}]}
+  //initialData = {"otros1":true,"otros2":false,"movimientos":[{"alias":"ale.luis","fechaAlias":{"start":"2024-06-15T03:00:00.000Z","end":"2024-06-16T03:00:00.000Z"}}],"frutas":[{"fruta":"333333333"},{"fruta":"444444444"}]}
+  initialData = {}
 
   dynamicFormService = inject(DynamicFormService)
 
@@ -168,7 +169,7 @@ export class AppComponent {
     {
       "type": "text",
       "label": "Alias",
-      "name": "displayName",
+      "name": "alias",
       "value": "",
       "mask": "000.000.000",
       "validations": [
@@ -268,5 +269,231 @@ export class AppComponent {
     }
   ]
 
+////////////////////////////////////////////////////////////////////////////////
+
+  formEjemplo1 = [
+    {
+      "type": "text",
+      "label": "Nombre",
+      "name": "nombre",
+      "value": "Alejandro",
+      "validations": [
+        {
+          "validator": "required",
+          "message": "El email es requerido"
+        }
+      ]
+    },
+    {
+      "type": "password",
+      "label": "Contraseña",
+      "name": "clave",
+      "value": "123",
+      "validations": [
+        {
+          "validator": "required",
+          "message": "La contreña es requerida"
+        }
+      ]
+    },
+    {
+      "type": "number",
+      "label": "Edad",
+      "name": "edad",
+      "value": "18",
+      "validations": [
+        {
+          "validator": "required",
+          "message": "La edad es requerido"
+        },
+        {
+          "validator": "min",
+          "value": "18",
+          "message": "La edad no puede ser menor a 18"
+        },
+        {
+          "validator": "max",
+          "value": "100",
+          "message": "La edad no puede ser mayor a 100"
+        }
+      ]
+    },
+    {
+      "type": "email",
+      "label": "Email",
+      "name": "email",
+      "value": "ale@luis",
+      "validations": [
+        {
+          "validator": "email",
+          "message": "Debe ser un email válido"
+        },
+        {
+          "validator": "required",
+          "message": "El email es requerido"
+        },
+        {
+          "validator": "minlength",
+          "value": "5",
+          "message": "El email no puede tener menos de 5 caracteres"
+        },
+        {
+          "validator": "maxlength",
+          "value": "8",
+          "message": "El email no puede tener más de 8 caracteres"
+        }
+      ]
+    },
+    {
+      "type": "textarea",
+      "label": "Observaciones",
+      "name": "observaciones",
+      "value": ""
+    },
+    {
+      "type": "checkbox",
+      "label": "Acepto los terminos y condiciones",
+      "name": "terminos",
+      "value": true,
+      "validations": [
+        {
+          "validator": "requiredTrue",
+          "message": "Debe aceptar los terminos y condiciones"
+        }
+      ]
+    },
+    {
+      "type": "radio",
+      "label": "Genero",
+      "name": "genero",
+      "value": "M",
+      "options": [
+        {
+          "label": "Masculino",
+          "value": "M"
+        },
+        {
+          "label": "Femenino",
+          "value": "F"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "label": "Pais",
+      "name": "pais",
+      "value": "AR",
+      "options": [
+        {
+          "label": "Argentina",
+          "value": "AR"
+        },
+        {
+          "label": "Francia",
+          "value": "FR"
+        },
+        {
+          "label": "Portugal",
+          "value": "PT"
+        }
+      ],
+      "validations": [
+        {
+          "validator": "required",
+          "message": "El pais es requerido"
+        }
+      ]
+    },
+    {
+      "type": "autocomplete",
+      "label": "Autocompletado",
+      "name": "autocompletado",
+      "value": {"label":"Argentina","value":"AR"},
+      "optionsRest": "search",
+      "validations": [
+        {
+          "validator": "required",
+          "message": "El autocompletado es requerido"
+        },
+        {
+          "validator": "selected",
+          "message": "Debe seleccionar una opción válida"
+        }
+      ]
+    },
+    {
+      "type": "date",
+      "label": "Fecha",
+      "name": "fecha",
+      "value": "1979-10-17T00:00:00",
+      "validations": [
+        {
+          "validator": "required",
+          "message": "La fecha es requerida"
+        }
+      ]
+    },
+    {
+      "type": "daterange",
+      "label": "Rango de fechas",
+      "name": "daterange",
+      "value": {
+        "start":"2024-06-20T03:00:00.000Z",
+        "end":"2024-06-22T03:00:00.000Z"
+      },
+      "validations": [
+        {
+          "validator": "required",
+          "message": "El rango de fechas es requerido"
+        }
+      ]
+    },
+    {
+      "type": "list",
+      "label": "Listas",
+      "name": "listas",
+      "value": [],
+      "form": [
+        {
+          "type": "text",
+          "label": "Item",
+          "name": "item",
+          "value": "",
+          "validations": [
+            {
+              "validator": "required",
+              "message": "El item es requerido"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Cuit",
+      "name": "cuit",
+      "mask": "00-00000000-0",
+      "value": "",
+      "validations": [
+        {
+          "validator": "cuit",
+          "message": "Debe ser un cuit válido"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Cbu",
+      "name": "cbu",
+      "mask": "0000000000000000000000",
+      "value": "",
+      "validations": [
+        {
+          "validator": "cbu",
+          "message": "Debe ser un cbu válido"
+        }
+      ]
+    }
+  ]
 
 }

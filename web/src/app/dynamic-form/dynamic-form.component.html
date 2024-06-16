@@ -71,10 +71,12 @@
         }
 
         @if (['checkbox'].includes(control.type)) {
-          <p><mat-checkbox [formControlName]="control.name">{{control.label}}</mat-checkbox></p>
-          @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
-            <mat-error>{{getErrorMessage(control)}}</mat-error>
-          }
+          <div class="pnl-checkbox">
+            <p><mat-checkbox [formControlName]="control.name">{{control.label}}</mat-checkbox></p>
+            @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
+              <mat-error>{{getErrorMessage(control)}}</mat-error>
+            }
+          </div>
         }
 
 

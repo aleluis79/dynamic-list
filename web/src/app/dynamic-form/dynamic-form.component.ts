@@ -111,7 +111,7 @@ export class DynamicFormComponent {
 
           if (control.type === 'daterange') {
 
-            if (initialData) {
+            if (initialData && (initialData as any)[control.name]) {
               for(const [key, value] of Object.entries(initialData)){
                 if (control.name === key) {
                   formGroup[control.name] = new FormGroup({
@@ -122,8 +122,8 @@ export class DynamicFormComponent {
               }
             } else {
               formGroup[control.name] = new FormGroup({
-                start: new FormControl<Date | null>(null, { validators: control.validations?.find(v => v.validator === 'required') ? Validators.required : null }),
-                end: new FormControl<Date | null>(null, { validators: control.validations?.find(v => v.validator === 'required') ? Validators.required : null }),
+                start: new FormControl<Date | null>(control.value == undefined ? null : control.value.start, { validators: control.validations?.find(v => v.validator === 'required') ? Validators.required : null }),
+                end: new FormControl<Date | null>(control.value == undefined ? null : control.value.end, { validators: control.validations?.find(v => v.validator === 'required') ? Validators.required : null }),
               });
             }
 
