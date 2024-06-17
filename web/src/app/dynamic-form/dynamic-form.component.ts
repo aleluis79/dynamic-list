@@ -10,7 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { HttpClient } from '@angular/common/http';
-import { debounceTime, distinctUntilChanged, switchMap, of, Subject, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, of, Subject, takeUntil, catchError } from 'rxjs';
 import { NgxMaskDirective } from 'ngx-mask';
 import { DynamicListComponent } from '../dynamic-list/dynamic-list.component';
 import { DynamicFormService } from './dynamic-form.service';
@@ -151,11 +151,15 @@ export class DynamicFormComponent {
               distinctUntilChanged(),
               switchMap(value => {
                 if ((value || '')?.length >= 3) {
-                  return this.http.get<IOption[]>(`${this.urlApi()}/${control.optionsRest}/${value}`)
+                  return this.http.get<IOption[]>(`${this.urlApi()}/${control.optionsRest}/${value}`).pipe(
+                    catchError(async (error) => {
+                      console.warn(error)
+                    })
+                  )
                 } else {
                   return of([])
                 }
-              }),
+              })
             ).subscribe((items: any) => control.options = items)
           }
         })
