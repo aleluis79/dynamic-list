@@ -5,9 +5,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmComponent } from '../confirm/confirm.component';
 import { NgxMaskPipe } from 'ngx-mask';
-import { DynamicFormComponent, IFormStructure } from '../dynamic-form/dynamic-form.component';
+import { DynamicFormComponent } from '../dynamic-form/dynamic-form.component';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { AddItemComponent } from '../add-item/add-item.component';
+import { IFormStructure } from '../dynamic-form/dynamic-form.service';
+import { takeLast } from 'rxjs';
 
 @Component({
     selector: 'app-dynamic-list',
@@ -32,6 +34,8 @@ export class DynamicListComponent {
   items = model.required<any[]>()
 
   formStructure = input.required<IFormStructure[]>({alias: 'formStructure'})
+
+  oldStr: IFormStructure[] = []
 
   initialData = model<object | undefined>(undefined, {alias: 'initialData'});
 
@@ -63,7 +67,7 @@ export class DynamicListComponent {
     })
   }
 
-  getHeaders() {
+  getHeaders(): string[] {
     return Object.keys(this.items()[0]);
   }
 
@@ -106,11 +110,10 @@ export class DynamicListComponent {
 
   }
 
-  createItem() {    
-    this.data = undefined
-    //this.itemNew = true
+  createItem() {
 
-    const formStructure = this.formStructure()
+    let formStructure = structuredClone(this.formStructure())
+
     const initialData = this.data
 
     const dialogRef = this.dialog.open(AddItemComponent, {
@@ -161,7 +164,8 @@ export class DynamicListComponent {
     this.data = item
     this.itemEdit = item
 
-    const formStructure = this.formStructure()
+    let formStructure = structuredClone(this.formStructure())
+
     const initialData = this.data
 
     const dialogRef = this.dialog.open(AddItemComponent, {
@@ -173,10 +177,13 @@ export class DynamicListComponent {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(takeLast(1)).subscribe(result => {
       console.log('The dialog was closed');
       if (result !== undefined) {
         this.process(result)
+      } else {
+        this.itemEdit = undefined
+        this.data = undefined
       }
     });
 

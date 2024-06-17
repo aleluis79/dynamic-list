@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { IFormStructure } from './dynamic-form/dynamic-form.component';
+import { IFormStructure } from './dynamic-form/dynamic-form.service';
 
 
 const options: OptionValue[] = [

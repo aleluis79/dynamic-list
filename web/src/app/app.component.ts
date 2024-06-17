@@ -8,8 +8,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { ComunService } from './comun.service';
 import { of } from 'rxjs';
-import { DynamicFormComponent, IFormStructure } from './dynamic-form/dynamic-form.component';
-import { DynamicFormService } from './dynamic-form/dynamic-form.service';
+import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
+import { DynamicFormService, IFormStructure } from './dynamic-form/dynamic-form.service';
 
 @Component({
     selector: 'app-root',
@@ -41,7 +41,7 @@ export class AppComponent {
 
   tipoRequerimiento = ''
 
-  //initialData = {"otros1":true,"otros2":false,"movimientos":[{"alias":"ale.luis","fechaAlias":{"start":"2024-06-15T03:00:00.000Z","end":"2024-06-16T03:00:00.000Z"}}],"frutas":[{"fruta":"333333333"},{"fruta":"444444444"}]}
+  //initialData = {"otros1":true,"otros2":false,"movimientos":[{"alias":"ale.luis.123","fechaAlias":{"start":"2024-06-15T03:00:00.000Z","end":"2024-06-16T03:00:00.000Z"}}],"frutas":[{"fruta":"333333333"},{"fruta":"444444444"}]}
   initialData = {}
 
   dynamicFormService = inject(DynamicFormService)

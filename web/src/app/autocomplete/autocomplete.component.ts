@@ -77,7 +77,7 @@ export class AutocompleteComponent {
   }
 
 
-  displayFn(option: OptionValue): string {
+  autocompleteDisplay(option: OptionValue): string {
     return option ? option.viewValue : '';
   }
 

@@ -7,7 +7,7 @@
           [formControl]="myControl"
           [matAutocomplete]="auto"
           onfocus="this.select()">
-  <mat-autocomplete autoActiveFirstOption autoSelectActiveOption #auto="matAutocomplete" [displayWith]="displayFn">
+  <mat-autocomplete autoActiveFirstOption autoSelectActiveOption #auto="matAutocomplete" [displayWith]="autocompleteDisplay">
     @if (myControl.value?.length! == 0 && optionTopFn()) {
       <mat-optgroup label="Más usados"></mat-optgroup>
     }

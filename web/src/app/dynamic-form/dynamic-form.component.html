@@ -90,7 +90,7 @@
                     [formControlName]="control.name"
                     [matAutocomplete]="auto"
                     onfocus="this.select()">
-            <mat-autocomplete autoActiveFirstOption autoSelectActiveOption #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-autocomplete autoActiveFirstOption autoSelectActiveOption #auto="matAutocomplete" [displayWith]="autocompleteDisplay">
               @for (option of control.options; track option.label) {
                 <mat-option [value]="option">
                   {{option.label}}
@@ -129,9 +129,8 @@
 
         @if (['list'].includes(control.type)) {
           @defer() {
-              <app-dynamic-list [(items)]="lists[control.name]" [initialData]="getData(control.name)" label="{{control.label}}" [formStructure]="control.form!" />
+            <app-dynamic-list [(items)]="lists[control.name]" [initialData]="getInitialDataForList(control.name)" label="{{control.label}}" [formStructure]="control.form!" />
           }
-
         }
 
       </div>

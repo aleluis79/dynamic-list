@@ -3,28 +3,30 @@
 
     <p><mat-checkbox [checked]="controlCheck" (change)="changeCheck($event)">{{ label() }}</mat-checkbox></p>
     @if (controlCheck) {
-      <button type="button" mat-icon-button (click)="createItem()"><mat-icon>add</mat-icon></button>
-      <table>
-        @for (item of this.items(); track index; let index = $index) {
-          <tr>
-            @for(header of getHeaders(); track header) {
+      <div class="list-container">
+        <button type="button" mat-icon-button (click)="createItem()"><mat-icon>add</mat-icon></button>
+        <table>
+          @for (item of this.items(); track index; let index = $index) {
+            <tr>
+              @for(header of getHeaders(); track header) {
+                <td>
+                  @if (getMask(header); as mask) {
+                    {{getValueDescription(item, header) | mask: mask}}
+                  } @else {
+                    {{getValueDescription(item, header)}}
+                  }
+                </td>
+              }
               <td>
-                @if (getMask(header); as mask) {
-                  {{getValueDescription(item, header) | mask: mask}}
-                } @else {
-                  {{getValueDescription(item, header)}}
-                }
+                <div>
+                  <button mat-icon-button (click)="editarItem(item)"><mat-icon>edit</mat-icon></button>
+                  <button mat-icon-button (click)="removeItem(item)"><mat-icon>delete</mat-icon></button>
+                </div>
               </td>
-            }
-            <td>
-              <div>
-                <button mat-icon-button (click)="editarItem(item)"><mat-icon>edit</mat-icon></button>
-                <button mat-icon-button (click)="removeItem(item)"><mat-icon>delete</mat-icon></button>
-              </div>
-            </td>
-          </tr>
-        }
-      </table>
+            </tr>
+          }
+        </table>
+      </div>
     }
   </section>
 }

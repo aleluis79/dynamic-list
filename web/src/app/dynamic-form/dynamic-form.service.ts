@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { IOption } from "./dynamic-form.component";
 
 @Injectable({
     providedIn: 'root'
@@ -22,3 +21,27 @@ export class DynamicFormService {
 
 }
 
+// Structures
+
+export interface IFormStructure {
+    type: string;
+    label: string;
+    name: string;
+    value: string | number | boolean | any;
+    options?: IOption[];
+    optionsRest?: string;
+    optionsVar?: string;
+    mask?: string;
+    form?: IFormStructure[];
+    validations?: {
+      validator: string;
+      value?: string | number | boolean;
+      message: string;
+    }[];
+  }
+  
+  export interface IOption {
+    label: string;
+    value: number | string | boolean;
+  }
+  

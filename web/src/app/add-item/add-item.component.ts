@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { DynamicFormComponent, IFormStructure } from '../dynamic-form/dynamic-form.component';
+import { DynamicFormComponent } from '../dynamic-form/dynamic-form.component';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { IFormStructure } from '../dynamic-form/dynamic-form.service';
 
 @Component({
   selector: 'app-add-item',

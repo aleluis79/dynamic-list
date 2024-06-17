@@ -1,5 +1,5 @@
 import { Component, effect, inject, input, output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -13,7 +13,8 @@ import { HttpClient } from '@angular/common/http';
 import { debounceTime, distinctUntilChanged, switchMap, of, Subject, takeUntil, catchError } from 'rxjs';
 import { NgxMaskDirective } from 'ngx-mask';
 import { DynamicListComponent } from '../dynamic-list/dynamic-list.component';
-import { DynamicFormService } from './dynamic-form.service';
+import { DynamicFormService, IFormStructure, IOption } from './dynamic-form.service';
+import { SelectionRequiredValidator, CuitValidator, CBUValidator, CVUValidator } from './dynamic-form.validators';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -41,7 +42,7 @@ export class DynamicFormComponent {
 
   formStructure = input.required<IFormStructure[]>({alias: 'formStructure'});
 
-  initialData = input.required<object | undefined>({alias: 'initialData'});
+  initialData = input<object | undefined>({},{alias: 'initialData'});
 
   urlApi = input<string>('', {alias: 'urlApi'});
 
@@ -69,6 +70,9 @@ export class DynamicFormComponent {
         let formGroup: { [key: string]: any } = {};
 
         formStructure.forEach(control => {
+          
+          // Add validators to control
+          
           let controlValidators: ValidationErrors[] = [];
 
           if (control.validations) {
@@ -89,15 +93,17 @@ export class DynamicFormComponent {
             });
           }
 
+          // Add initial data to control
+
           if (initialData) {
             for(const [key, value] of Object.entries(initialData)){
               if (control.name === key) {
                 control.value = value as string
               }
             }
-          } else {
-            control.value = ''
           }
+
+          // Add options to control
 
           if (control.optionsRest && control.type === 'select') {
             this.http.get<IOption[]>(`${this.urlApi()}/${control.optionsRest}`).subscribe(items =>
@@ -109,8 +115,9 @@ export class DynamicFormComponent {
             control.options = this.dynamicFormService.getCollection(control.optionsVar)
           }
 
-          if (control.type === 'daterange') {
+          // Add control to form group
 
+          if (control.type === 'daterange') {
             if (initialData && (initialData as any)[control.name]) {
               for(const [key, value] of Object.entries(initialData)){
                 if (control.name === key) {
@@ -126,16 +133,11 @@ export class DynamicFormComponent {
                 end: new FormControl<Date | null>(control.value == undefined ? null : control.value.end, { validators: control.validations?.find(v => v.validator === 'required') ? Validators.required : null }),
               });
             }
-
+          } else if (control.type === 'list') {
+              this.lists[control.name] = []
           } else {
-            if (control.type !== 'list') {
+              // General case for most controls...
               formGroup[control.name] = [control.value == undefined ? '' : control.value, controlValidators];
-            }
-          }
-
-
-          if (control.type === 'list') {
-            this.lists[control.name] = []
           }
 
         });
@@ -144,6 +146,7 @@ export class DynamicFormComponent {
 
         formStructure.forEach(control => {
           if (control.optionsRest && control.type === 'autocomplete') {
+            // Subscribe to the change events of the autocomplete control and update the options
             this.dynamicForm.get(control.name)?.valueChanges
             .pipe(
               takeUntil(this.$destroy),
@@ -170,7 +173,7 @@ export class DynamicFormComponent {
 
   }
 
-  getData(name: string): any {
+  getInitialDataForList(name: string): any {
     const data =  this.initialData() as any
     const dataArray = data[name]
     return dataArray
@@ -217,108 +220,8 @@ export class DynamicFormComponent {
     return control.validations?.some((validation: any) => validation.validator === 'required');
   }
 
-  displayFn(option: IOption): string {
+  autocompleteDisplay(option: IOption): string {
     return option ? option.label : '';
   }
 
-}
-
-export const SelectionRequiredValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-
-  const item = control?.value
-  return typeof item === 'string' ? { selected: true } : null;
-}
-
-
-export const CuitValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-
-  // Eliminar cualquier carácter no numérico
-  const cuitCuilNumerico = control?.value.replace(/\D/g, '');
-
-  // Verificar que la longitud sea 11
-  if (cuitCuilNumerico.length !== 11) {
-      return { cuit: true };
-  }
-
-  // Convertir a un array de números
-  const cuitCuilArray = cuitCuilNumerico.split('').map(Number);
-
-  // Coeficientes según la posición
-  const coeficientes = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
-
-  // Calcular el número verificador
-  const verificador = cuitCuilArray[10];
-  const suma = cuitCuilArray.slice(0, 10).reduce((acc: number, num: number, index: number) => acc + num * coeficientes[index], 0);
-  const resto = suma % 11;
-  const digitoCalculado = resto === 0 ? 0 : resto === 1 ? 9 : 11 - resto;
-
-  // Verificar el dígito calculado con el dígito verificador
-  return digitoCalculado === verificador ? null : { cuit: true };
-
-}
-
-export const CBUValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  return validarCBU(control?.value) ? null : { cbu: true };
-}
-
-export const CVUValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  return validarCBU(control?.value) ? null : { cvu: true };
-}
-
-function validarCBU(cbu: string) {
-  if (cbu.length != 22) { return false }
-  return validarCodigoBanco(cbu.slice(0,8)) && validarCuenta(cbu.slice(8,22))
-}
-
-function validarCodigoBanco(codigo: string) {
- if (codigo.length != 8) { return false }
- var banco = codigo.slice(0,3)
-
- var sucursal = codigo.slice(3,7)
- var digitoVerificador2 = codigo[7]
-
- var suma = parseInt(banco[0]) * 7 + parseInt(banco[1]) * 1 + parseInt(banco[2]) * 3 + parseInt(sucursal[0]) * 9 + parseInt(sucursal[1]) * 7 + parseInt(sucursal[2]) * 1 + parseInt(sucursal[3]) * 3
-
- var diferencia = 10 - (suma % 10)
-
- if(parseInt(digitoVerificador2)!=0 && diferencia == parseInt(digitoVerificador2)) return true;
- if(parseInt(digitoVerificador2)==0 && diferencia == 10) return true;
-
- return false;
-}
-
-function validarCuenta(cuenta: string) {
- if (cuenta.length != 14) { return false }
- var digitoVerificador = parseInt(cuenta[13])
- var suma = parseInt(cuenta[0]) * 3 + parseInt(cuenta[1]) * 9 + parseInt(cuenta[2]) * 7 + parseInt(cuenta[3]) * 1 + parseInt(cuenta[4]) * 3 + parseInt(cuenta[5]) * 9 + parseInt(cuenta[6]) * 7 + parseInt(cuenta[7]) * 1 + parseInt(cuenta[8]) * 3 + parseInt(cuenta[9]) * 9 + parseInt(cuenta[10]) * 7 + parseInt(cuenta[11]) * 1 + parseInt(cuenta[12]) * 3
- var diferencia = 10 - (suma % 10)
-
- if(digitoVerificador!=0 && diferencia == digitoVerificador) return true;
- if(digitoVerificador==0 && diferencia == 10) return true;
-
- return false;
-
-}
-
-
-export interface IFormStructure {
-  type: string;
-  label: string;
-  name: string;
-  value: string | number | boolean | any;
-  options?: IOption[];
-  optionsRest?: string;
-  optionsVar?: string;
-  mask?: string;
-  form?: IFormStructure[];
-  validations?: {
-    validator: string;
-    value?: string | number | boolean;
-    message: string;
-  }[];
-}
-
-export interface IOption {
-  label: string;
-  value: number | string | boolean;
 }

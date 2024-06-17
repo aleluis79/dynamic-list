@@ -36,9 +36,10 @@
   <button mat-flat-button (click)="reset()">reset</button>
 }
 -->
-
-<app-dynamic-form 
-  [formStructure]="this.formEjemplo1" 
-  [initialData]="this.initialData" 
-  (submitForm)="process($event)"
-  urlApi="http://localhost:5000/Home" />
+<div class="container">
+  <app-dynamic-form 
+    [formStructure]="this.formEjemplo1" 
+    [initialData]="this.initialData" 
+    (submitForm)="process($event)"
+    urlApi="http://localhost:5000/Home" />
+</div>
