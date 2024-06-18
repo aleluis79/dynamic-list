@@ -271,6 +271,30 @@ export class AppComponent {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+  formEjemplo = [
+    {
+      "type": "list",
+      "label": "Alias",
+      "name": "listaAlias",
+      "value": [],
+      "form": [
+        {
+          "type": "text",
+          "label": "Alias",
+          "name": "alias",
+          "value": "",
+          "validations": [
+            {
+              "validator": "required",
+              "message": "El alias es requerido"
+            }
+          ]
+        }
+      ]
+    },
+  ]
+
+
   formEjemplo1 = [
     {
       "type": "text",
@@ -280,7 +304,7 @@ export class AppComponent {
       "validations": [
         {
           "validator": "required",
-          "message": "El email es requerido"
+          "message": "El nombre es requerido"
         }
       ]
     },
@@ -453,6 +477,7 @@ export class AppComponent {
       "label": "Listas",
       "name": "listas",
       "value": [],
+      "withCheck": true,
       "form": [
         {
           "type": "text",

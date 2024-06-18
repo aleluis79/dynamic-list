@@ -32,6 +32,7 @@ export interface IFormStructure {
     optionsRest?: string;
     optionsVar?: string;
     mask?: string;
+    withCheck?: boolean;
     form?: IFormStructure[];
     validations?: {
       validator: string;

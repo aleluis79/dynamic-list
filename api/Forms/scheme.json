@@ -62,6 +62,10 @@
           "type": "object"
         }
       },
+      "withCheck": {
+        "description": "Indica si se agrega un checkbox para agregar los items a la lista",
+        "type": "boolean"
+      },
       "validations": {
         "description": "Validaciones para el control",
         "type": "array",
@@ -86,6 +90,32 @@
         }
       }
     },
-    "required": [ "type", "label", "name" ]
+    "required": [ "type", "label", "name" ],
+    "if": {
+      "properties": {
+        "type": {
+          "const": "list"
+        }
+      }
+    },
+    "then": {
+      "required": [ "form" ]
+    },
+    "else": {
+      "if": {
+        "properties": {
+          "type": {
+            "enum": ["select", "autocomplete", "radio"]
+          }
+        }
+      },
+      "then": {
+        "anyOf": [
+          {"required": ["options"]},
+          {"required": ["optionsRest"]},
+          {"required": ["optionsVar"]}
+        ]
+      }
+    }
   }
 }

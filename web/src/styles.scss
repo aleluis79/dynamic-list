@@ -16,7 +16,7 @@ $custom-palette: (
   25: #5980d2,
   30: #638ad7,
   35: #6e94db,
-  40: #769cdf,
+  40: #5980d2, // #769cdf,
   50: #8babe4,
   60: #9fbae9,
   70: #bbceef,
@@ -84,7 +84,7 @@ $custom-palette: (
     60: #8E9199,
     70: #A8ABB4,
     80: #C4C6CF,
-    90: #E0E2EC,
+    90: #F0F0F0, //#E0E2EC,
     95: #EEF0FA,
     98: #F9F9FF,
     99: #FDFBFF,
@@ -167,4 +167,4 @@ $mat3-theme-theme: mat.define-theme((
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

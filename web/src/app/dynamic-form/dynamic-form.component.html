@@ -129,7 +129,13 @@
 
         @if (['list'].includes(control.type)) {
           @defer() {
-            <app-dynamic-list [(items)]="lists[control.name]" [initialData]="getInitialDataForList(control.name)" label="{{control.label}}" [formStructure]="control.form!" />
+            <app-dynamic-list 
+              [(items)]="lists[control.name]" 
+              [initialData]="getInitialDataForList(control.name)" 
+              [formStructure]="control.form ?? []" 
+              [withCheck]="control.withCheck ?? false"
+              label="{{control.label}}" 
+              />
           }
         }
 

@@ -15,6 +15,7 @@
     "type": "list",
     "label": "Movimientos por rango de fechas",
     "name": "movimientos",
+    "withCheck": true,
     "value": [],
     "form": [
       {

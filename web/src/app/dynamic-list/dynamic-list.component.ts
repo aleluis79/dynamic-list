@@ -1,5 +1,5 @@
 import { Component, effect, inject, input, model } from '@angular/core';
-import { DatePipe, JsonPipe } from '@angular/common';
+import { CommonModule, DatePipe, JsonPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
@@ -21,6 +21,7 @@ import { takeLast } from 'rxjs';
         NgxMaskPipe
     ],
     imports: [
+        CommonModule,
         MatButtonModule,
         MatIconModule,
         JsonPipe,
@@ -35,11 +36,11 @@ export class DynamicListComponent {
 
   formStructure = input.required<IFormStructure[]>({alias: 'formStructure'})
 
-  oldStr: IFormStructure[] = []
-
-  initialData = model<object | undefined>(undefined, {alias: 'initialData'});
+  initialData = model<object | undefined>(undefined, {alias: 'initialData'})
 
   label = input.required<string>({alias: 'label'})
+
+  withCheck = input<boolean>(false, {alias: 'withCheck'})
 
   controlCheck = false
 
