@@ -122,6 +122,7 @@ export class DynamicListComponent {
       data: {
         formStructure,
         initialData,
+        items: this.items(),
         title: 'Alta de ' + this.label().toLowerCase()
       }
     });
@@ -174,6 +175,7 @@ export class DynamicListComponent {
       data: {
         formStructure,
         initialData,
+        items: this.items(),
         title: 'Modificación de ' + this.label().toLowerCase()
       }
     });
