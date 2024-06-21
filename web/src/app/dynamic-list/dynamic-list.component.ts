@@ -76,6 +76,8 @@ export class DynamicListComponent {
     let value = item[key]
     if (value && typeof value === 'object' && value['start'] && value['end']) {
       value = this.datePipe.transform(value['start'],'dd/MM/yyyy') + " - " + this.datePipe.transform(value['end'],'dd/MM/yyyy')
+    } else if (value && typeof value === 'object') {
+      return ''
     }
     return value
   }
@@ -115,10 +117,10 @@ export class DynamicListComponent {
 
     let formStructure = structuredClone(this.formStructure())
 
-    const initialData = this.data
+    const initialData = {}//this.data
 
     const dialogRef = this.dialog.open(AddItemComponent, {
-      minWidth: '700px',
+      minWidth: '900px',
       data: {
         formStructure,
         initialData,
@@ -171,7 +173,7 @@ export class DynamicListComponent {
     const initialData = this.data
 
     const dialogRef = this.dialog.open(AddItemComponent, {
-      minWidth: '700px',
+      minWidth: '900px',
       data: {
         formStructure,
         initialData,
