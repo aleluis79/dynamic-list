@@ -108,6 +108,7 @@ export class AppComponent {
       "type": "list",
       "label": "Movimientos por rango de fechas",
       "name": "movimientos",
+      "withCheck": true,
       "value": [],
       "form": [
         {
@@ -141,6 +142,7 @@ export class AppComponent {
       "type": "list",
       "label": "Frutas",
       "name": "frutas",
+      "withCheck": true,
       "value": [],
       "form": [
         {
@@ -160,6 +162,38 @@ export class AppComponent {
               "message": "La fruta no es valida"
             }
           ]
+        },
+        {
+        "type": "list",
+        "label": "Todos",
+        "name": "todos",
+        "value": [],
+        "form": [
+          {
+            "type": "text",
+            "label": "Todo",
+            "name": "todo",
+            "value": "",
+          },
+          {
+            "type": "text",
+            "label": "Todo2",
+            "name": "todo2",
+            "value": "",
+          },
+          {
+            "type": "text",
+            "label": "Todo3",
+            "name": "todo3",
+            "value": "",
+          },
+          {
+            "type": "text",
+            "label": "Todo4",
+            "name": "todo4",
+            "value": "",
+          }
+        ]
         }
       ]
     }

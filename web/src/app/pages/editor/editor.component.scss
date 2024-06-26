@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+.json {
+    padding: 20px;
+    background-color: #333;
+    color: snow;
+    min-width:600px;
+    border: solid 1px silver;
+}
+
+.editor {
+    padding: 20px;
+    min-width: 600px;
+    border: solid 1px silver;
+}
+
+.lista {
+    padding: 20px;
+    min-width: 600px;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+}
+
+.preview {
+    padding: 20px;
+    border: solid 1px silver;
+    min-width: 600px;
+}

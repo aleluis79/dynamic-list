@@ -40,6 +40,8 @@ export class DynamicFormComponent {
 
   private $destroy = new Subject<void>();
 
+  formAux  : IFormStructure[] = []
+
   formStructure = input.required<IFormStructure[]>({alias: 'formStructure'});
 
   initialData = input<object | undefined>({},{alias: 'initialData'});
@@ -63,6 +65,8 @@ export class DynamicFormComponent {
     effect(() => {
 
       let formStructure = this.formStructure();
+
+      this.formAux = structuredClone(formStructure)
 
       if (formStructure.length > 0) {
 
@@ -171,7 +175,7 @@ export class DynamicFormComponent {
 
     })
 
-  }
+}
 
   getInitialDataForList(name: string): any {
     const data =  this.initialData() as any

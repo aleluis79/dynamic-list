@@ -1,0 +1,42 @@
+<div class="container">
+    <section class="editor">
+        <mat-form-field>
+            <mat-label>Tipo</mat-label>
+            <mat-select [formControl]="this.typeControl" [required]="true" (selectionChange)="onChange($event)">
+            <mat-option value="">Seleccione</mat-option>
+            @for (option of options; track option.value) {
+                <mat-option [value]="option.value">{{option.viewValue}}</mat-option>
+            }
+            </mat-select>
+        </mat-form-field>
+        <br />
+        @if (this.formStructure) {
+            <app-dynamic-form [formStructure]="this.formStructure" [initialData]="this.initialData" (submitForm)="process($event)" />
+        }
+    </section>
+    <section class="lista">
+        <button mat-mini-fab style="box-shadow: none;" (click)="limpiar()"><mat-icon>delete</mat-icon></button>&nbsp;
+        <button mat-mini-fab style="box-shadow: none;" (click)="refresh()"><mat-icon>refresh</mat-icon></button>
+        <br />        
+        @for (item of this.data; track item.name; let index = $index) {
+            <tr>
+                <td style="width: 400px">{{item.label}}</td>
+                <td>
+                    <button mat-mini-fab style="box-shadow: none;" type="button" (click)="edit(item)"><mat-icon>edit</mat-icon></button>&nbsp;
+                    <button mat-mini-fab style="box-shadow: none;" type="button" (click)="this.subir(index)"><mat-icon>arrow_upward</mat-icon></button>&nbsp;
+                    <button mat-mini-fab style="box-shadow: none;" type="button" (click)="this.bajar(index)"><mat-icon>arrow_downward</mat-icon></button>&nbsp;
+                    <button mat-mini-fab style="box-shadow: none;" type="button" (click)="borrar(item)"><mat-icon>delete</mat-icon></button>
+                </td>
+            </tr>
+        }
+    </section>
+    <section [ngClass]="{json: !this.preview}" class="preview">
+        <button type="button" (click)="this.preview = !this.preview">Preview/Json</button>
+        <button type="button" [cdkCopyToClipboard]="this.data | json">Copy to clipboard</button>
+        @if (this.preview) {
+            <app-dynamic-form [formStructure]="this.formPreview" /> 
+        } @else {
+          <pre>{{ this.data | json}}</pre>
+        }
+    </section>
+</div>

@@ -1,6 +1,6 @@
-@if (dynamicForm && this.formStructure() && this.formStructure().length > 0) {
+@if (dynamicForm && this.formAux && this.formAux.length > 0) {
   <form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()">
-    @for (control of this.formStructure(); track control.name) {
+    @for (control of this.formAux; track control.name) {
       <div class="example-container">
 
         @if (['text', 'number', 'email', 'password'].includes(control.type)) {
