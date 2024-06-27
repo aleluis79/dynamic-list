@@ -44,6 +44,11 @@ public class HomeController : ControllerBase
     public IActionResult GetSearch(string text) {
         return Ok(paises.Where(x => x.Label.Contains(text, StringComparison.OrdinalIgnoreCase)));
     }
+
+    [HttpGet("countries")]
+    public IActionResult GetCountries() {
+        return Ok(paises);
+    }    
 }
 
 

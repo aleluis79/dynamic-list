@@ -11,7 +11,7 @@
         </mat-form-field>
         <br />
         @if (this.formStructure) {
-            <app-dynamic-form [formStructure]="this.formStructure" [initialData]="this.initialData" (submitForm)="process($event)" />
+            <app-dynamic-form [formStructure]="this.formStructure" urlApi="http://localhost:5000/Home" [initialData]="this.initialData" (submitForm)="process($event)" />
         }
     </section>
     <section class="lista">
@@ -34,9 +34,14 @@
         <button type="button" (click)="this.preview = !this.preview">Preview/Json</button>
         <button type="button" [cdkCopyToClipboard]="this.data | json">Copy to clipboard</button>
         @if (this.preview) {
-            <app-dynamic-form [formStructure]="this.formPreview" /> 
+            <app-dynamic-form [formStructure]="this.formPreview" urlApi="http://localhost:5000/Home" /> 
         } @else {
-          <pre>{{ this.data | json}}</pre>
+            <button type="button" (click)="this.jsonEdit = !this.jsonEdit">Edit/View</button>
+            @if (this.jsonEdit) {
+                <div><textarea style="min-width: 100%;" rows="30" [(ngModel)]="this.dataValue" name="" id=""></textarea></div>
+            } @else {
+                <pre>{{ this.data | json}}</pre>
+            }
         }
     </section>
 </div>

@@ -68,12 +68,12 @@ export class DynamicFormComponent {
 
       this.formAux = structuredClone(formStructure)
 
-      if (formStructure.length > 0) {
+      if (this.formAux.length > 0) {
 
         let initialData = this.initialData();
         let formGroup: { [key: string]: any } = {};
 
-        formStructure.forEach(control => {
+        this.formAux.forEach(control => {
           
           // Add validators to control
           
@@ -148,7 +148,7 @@ export class DynamicFormComponent {
 
         this.dynamicForm = this.formBuilder.group(formGroup);
 
-        formStructure.forEach(control => {
+        this.formAux.forEach(control => {
           if (control.optionsRest && control.type === 'autocomplete') {
             // Subscribe to the change events of the autocomplete control and update the options
             this.dynamicForm.get(control.name)?.valueChanges

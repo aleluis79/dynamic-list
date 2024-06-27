@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { OptionValue } from '../../comun.service';
@@ -24,7 +24,8 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
         MatIconModule,
         ReactiveFormsModule,
         DynamicFormComponent,
-        JsonPipe
+        JsonPipe,
+        FormsModule
     ]
 })
 export default class EditorComponent {
@@ -40,6 +41,21 @@ export default class EditorComponent {
   data : IFormStructure[] = []
 
   preview = true;
+
+  jsonEdit = false;
+
+
+  get dataValue () {
+    return JSON.stringify(this.data, null, 2);
+  }
+
+  set dataValue (v) {
+    try{
+    this.data = JSON.parse(v);}
+    catch(e) {
+      console.log('error occored while you were typing the JSON');
+    };
+  }  
 
   options: OptionValue[] = [
     { value: 'text', viewValue: 'Texto' },
