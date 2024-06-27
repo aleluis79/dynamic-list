@@ -64,9 +64,7 @@ export class DynamicFormComponent {
 
     effect(() => {
 
-      let formStructure = this.formStructure();
-
-      this.formAux = structuredClone(formStructure)
+      this.formAux = structuredClone(this.formStructure())
 
       if (this.formAux.length > 0) {
 
