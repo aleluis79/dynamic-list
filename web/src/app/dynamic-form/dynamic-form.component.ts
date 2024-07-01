@@ -15,6 +15,11 @@ import { NgxMaskDirective } from 'ngx-mask';
 import { DynamicListComponent } from '../dynamic-list/dynamic-list.component';
 import { DynamicFormService, IFormStructure, IOption } from './dynamic-form.service';
 import { SelectionRequiredValidator, CuitValidator, CBUValidator, CVUValidator } from './dynamic-form.validators';
+import { DatetimerangeComponent } from '../datetimerange/datetimerange.component';
+import { MtxDatetimepicker, MtxDatetimepickerInput, MtxDatetimepickerToggle } from '@ng-matero/extensions/datetimepicker';
+import { DateAdapter } from '@angular/material/core';
+import { CustomDateTimeAdapter } from '../adapters/customDateTimeAdapter';
+import { provideNativeDatetimeAdapter } from '@ng-matero/extensions/core';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -31,7 +36,15 @@ import { SelectionRequiredValidator, CuitValidator, CBUValidator, CVUValidator }
     MatCheckboxModule,
     MatAutocompleteModule,
     NgxMaskDirective,
-    DynamicListComponent
+    DynamicListComponent,
+    DatetimerangeComponent,
+    MtxDatetimepicker,
+    MtxDatetimepickerInput,
+    MtxDatetimepickerToggle,
+  ],
+  providers: [
+    provideNativeDatetimeAdapter(),
+    { provide: DateAdapter, useClass: CustomDateTimeAdapter }
   ],
   templateUrl: './dynamic-form.component.html',
   styleUrl: './dynamic-form.component.scss'
@@ -137,6 +150,8 @@ export class DynamicFormComponent {
             }
           } else if (control.type === 'list') {
               this.lists[control.name] = []
+          } else if (control.type === 'datetime') {
+              formGroup[control.name] = [control.value == undefined ? '' : new Date(control.value), controlValidators];
           } else {
               // General case for most controls...
               formGroup[control.name] = [control.value == undefined ? '' : control.value, controlValidators];
@@ -227,3 +242,4 @@ export class DynamicFormComponent {
   }
 
 }
+

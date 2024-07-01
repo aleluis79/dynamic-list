@@ -66,7 +66,9 @@ export default class EditorComponent {
     { value: 'select', viewValue: 'Selección' },
     { value: 'radio', viewValue: 'Radio button' },
     { value: 'date', viewValue: 'Fecha' },
+    { value: 'datetime', viewValue: 'Fecha y hora' },
     { value: 'daterange', viewValue: 'Fecha rango' },
+    { value: 'datetimerange', viewValue: 'Fecha y hora rango' },
     { value: 'checkbox', viewValue: 'Checkbox' }
   ]
 
@@ -91,7 +93,9 @@ export default class EditorComponent {
       case 'password':
       case 'textarea':
       case 'date':
+      case 'datetime':
       case 'daterange':
+      case 'datetimerange':
       case 'checkbox':
         this.formStructure = structuredClone(this.formText)
         break

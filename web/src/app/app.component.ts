@@ -3,13 +3,14 @@ import { RouterOutlet } from '@angular/router';
 import { AutocompleteComponent } from "./autocomplete/autocomplete.component";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { ComunService } from './comun.service';
 import { of } from 'rxjs';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { DynamicFormService, IFormStructure } from './dynamic-form/dynamic-form.service';
+import { DatetimerangeComponent } from "./datetimerange/datetimerange.component";
 
 @Component({
     selector: 'app-root',
@@ -26,7 +27,8 @@ import { DynamicFormService, IFormStructure } from './dynamic-form/dynamic-form.
         MatAutocompleteModule,
         FormsModule,
         ReactiveFormsModule,
-        DynamicFormComponent
+        DynamicFormComponent,
+        DatetimerangeComponent
     ]
 })
 export class AppComponent {
@@ -43,7 +45,9 @@ export class AppComponent {
 
   //initialData = {"otros1":true,"otros2":false,"movimientos":[{"alias":"ale.luis.123","fechaAlias":{"start":"2024-06-15T03:00:00.000Z","end":"2024-06-16T03:00:00.000Z"}}],"frutas":[{"fruta":"333333333"},{"fruta":"444444444"}]}
   initialData = {}
-
+  //initialData = {"fechaConHoraRango": {"start":"2024-07-01T03:00:00.000Z","end":"2024-07-02T03:00:00.000Z"}}
+  
+  
   dynamicFormService = inject(DynamicFormService)
 
   constructor() { 
@@ -552,7 +556,44 @@ export class AppComponent {
           "message": "Debe ser un cbu válido"
         }
       ]
+    },
+    {
+      type: "datetimerange",
+      label: "Fecha y hora",
+      name: "datetime",
+      value: {"start":"2024-07-01T03:00:00.000Z","end":"2024-07-02T03:00:00.000Z"},
+      validations: [
+        {
+          validator: "required",
+          message: "La fecha y hora es requerida"
+        }
+      ]
     }
   ]
+
+  formFecha: IFormStructure[] = [
+    {
+      type: "datetimerange",
+      label: "Fecha y hora rango",
+      name: "fechaConHoraRango",
+      value: {"start":"2024-07-01T03:00:00.000Z","end":"2024-07-02T03:00:00.000Z"},
+      validations: [
+        {
+          validator: "required",
+          message: "La fecha es requerida"
+        }
+      ]
+    }    
+  ]
+
+  form: FormGroup = new FormGroup({
+    datetime: new FormControl(''),
+  });
+
+  onSubmit() {
+    if (this.form.valid) {
+      console.log(JSON.stringify(this.form.value));
+    }
+  }
 
 }

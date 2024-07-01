@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^18.0.3",
     "@angular/platform-browser-dynamic": "^18.0.3",
     "@angular/router": "^18.0.3",
+    "@ng-matero/extensions": "^18.0.3",
     "ngx-mask": "^17.0.8",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

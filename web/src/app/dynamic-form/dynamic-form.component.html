@@ -51,10 +51,13 @@
         @if (['radio'].includes(control.type)) {
           <label id="example-radio-group-label">{{control.label}}</label>
           <mat-radio-group aria-labelledby="example-radio-group-label" [formControlName]="control.name">
-            @for (option of control.options; track option) {
+            @for (option of control.options; track option.label) {
               <mat-radio-button [value]="option.value">{{option.label}}</mat-radio-button>
             }
           </mat-radio-group>
+          @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
+            <mat-error>{{getErrorMessage(control)}}</mat-error>
+          }
         }
 
         @if (['date'].includes(control.type)) {
@@ -64,6 +67,22 @@
             <mat-hint>DD/MM/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
+            @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
+              <mat-error>{{getErrorMessage(control)}}</mat-error>
+            }
+          </mat-form-field>
+        }
+
+        @if(['datetimerange'].includes(control.type)) {
+          <app-datetimerange [formGroup]="dynamicForm" [control]="control.name" />
+        }
+
+        @if (['datetime'].includes(control.type)) {
+          <mat-form-field>
+            <mat-label>{{control.label}}</mat-label>
+            <mtx-datetimepicker #datetimePicker type="datetime" mode="portrait" />
+            <input [mtxDatetimepicker]="datetimePicker" [formControlName]="control.name" matInput>
+            <mtx-datetimepicker-toggle [for]="datetimePicker" matSuffix></mtx-datetimepicker-toggle>
             @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
               <mat-error>{{getErrorMessage(control)}}</mat-error>
             }
