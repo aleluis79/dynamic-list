@@ -7,10 +7,11 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material/core';
 import localeEsAr from '@angular/common/locales/es-AR';
 import { registerLocaleData } from '@angular/common';
-import { CustomDateAdapter } from './adapters/customDateAdapter';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { CustomErrorHandler } from './CustomErrorHandler';
 import { globalHttpErrorInterceptor } from './globalHttpErrorInterceptor';
+import { provideNativeDatetimeAdapter } from '@ng-matero/extensions/core';
+import { CustomDateTimeAdapter } from './adapters/customDateTimeAdapter';
 
 registerLocaleData(localeEsAr, 'es-ar');
 
@@ -33,8 +34,9 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideHttpClient(withFetch(), withInterceptors([globalHttpErrorInterceptor])),
     provideEnvironmentNgxMask(),
+    provideNativeDatetimeAdapter(),
+    { provide: DateAdapter, useClass: CustomDateTimeAdapter },
     { provide: LOCALE_ID, useValue: 'es-AR' },
-    { provide: DateAdapter, useClass: CustomDateAdapter },
     { provide: ErrorHandler, useClass: CustomErrorHandler },
     { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMAT },
   ]

@@ -1,13 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, input, model } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldAppearance, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { provideNativeDatetimeAdapter } from '@ng-matero/extensions/core';
 import { MtxDatetimepicker, MtxDatetimepickerInput, MtxDatetimepickerToggle } from '@ng-matero/extensions/datetimepicker';
-
-import { DateAdapter } from '@angular/material/core';
-import { CustomDateTimeAdapter } from '../adapters/customDateTimeAdapter';
 
 @Component({
   selector: 'app-datetimerange',
@@ -22,21 +18,20 @@ import { CustomDateTimeAdapter } from '../adapters/customDateTimeAdapter';
     MatInputModule,
   ],
   templateUrl: './datetimerange.component.html',
-  styleUrl: './datetimerange.component.scss',
-  providers: [
-    provideNativeDatetimeAdapter(),
-    { provide: DateAdapter, useClass: CustomDateTimeAdapter }
-  ]
+  styleUrl: './datetimerange.component.scss'
 })
 export class DatetimerangeComponent {
 
   control = input.required<string>()
 
   formGroup = model.required<FormGroup>()
+  
+  appearance = input<MatFormFieldAppearance>('fill', {alias: 'appearance'})
 
   start = new FormControl();
 
   end = new FormControl();
+
 
   constructor() {
     effect(() => {
@@ -47,7 +42,7 @@ export class DatetimerangeComponent {
         if (!start || !end) return
         this.start.setValue(new Date(start))
         this.end.setValue(new Date(end))
-      } else {        
+      } else {
         aux = JSON.parse(aux) || {}
         if (!aux?.start || !aux?.end) return
         const {start, end} = aux
@@ -55,8 +50,6 @@ export class DatetimerangeComponent {
         this.start.setValue(new Date(start))
         this.end.setValue(new Date(end))
       }
-
-      //{"start":"2024-07-01T03:00:00.000Z","end":"2024-07-02T03:00:00.000Z"}
     })
   }
 

@@ -4,7 +4,7 @@
       <div class="example-container">
 
         @if (['text', 'number', 'email', 'password'].includes(control.type)) {
-          <mat-form-field>
+          <mat-form-field [appearance]="this.appearance()">
             <mat-label>{{control.label}}</mat-label>
             <input matInput
                   placeholder="{{control.label}}"
@@ -19,7 +19,7 @@
         }
 
         @if (['textarea'].includes(control.type)) {
-          <mat-form-field>
+          <mat-form-field [appearance]="this.appearance()">
             <mat-label>{{control.label}}</mat-label>
             <textarea matInput
                   rows="3"
@@ -34,7 +34,7 @@
         }
 
         @if (['select'].includes(control.type)) {
-          <mat-form-field>
+          <mat-form-field [appearance]="this.appearance()">
             <mat-label>{{control.label}}</mat-label>
             <mat-select [formControlName]="control.name" [required]="isRequired(control)">
               <mat-option value="">Seleccione</mat-option>
@@ -61,7 +61,7 @@
         }
 
         @if (['date'].includes(control.type)) {
-          <mat-form-field>
+          <mat-form-field [appearance]="this.appearance()">
             <mat-label>{{control.label}}</mat-label>
             <input matInput [matDatepicker]="picker" [formControlName]="control.name">
             <mat-hint>DD/MM/YYYY</mat-hint>
@@ -74,11 +74,11 @@
         }
 
         @if(['datetimerange'].includes(control.type)) {
-          <app-datetimerange [formGroup]="dynamicForm" [control]="control.name" />
+          <app-datetimerange [formGroup]="dynamicForm" [control]="control.name" [appearance]="this.appearance()" />
         }
 
         @if (['datetime'].includes(control.type)) {
-          <mat-form-field>
+          <mat-form-field [appearance]="this.appearance()">
             <mat-label>{{control.label}}</mat-label>
             <mtx-datetimepicker #datetimePicker type="datetime" mode="portrait" />
             <input [mtxDatetimepicker]="datetimePicker" [formControlName]="control.name" matInput>
@@ -100,7 +100,7 @@
 
 
         @if (['autocomplete'].includes(control.type)) {
-          <mat-form-field class="example-full-width">
+          <mat-form-field class="example-full-width" [appearance]="this.appearance()">
             <mat-label>{{control.label}}</mat-label>
             <input type="text"
                     placeholder="Buscar..."
@@ -123,7 +123,7 @@
         }
 
         @if (['daterange'].includes(control.type)) {
-          <mat-form-field>
+          <mat-form-field [appearance]="this.appearance()">
             <mat-label>Enter a date range</mat-label>
             <mat-date-range-input [formGroup]="getRange(control.name)" [rangePicker]="picker">
               <input matStartDate formControlName="start" placeholder="Start date">
@@ -161,8 +161,8 @@
       </div>
     }
     <div class="button-container">
-      <button type="submit" mat-flat-button color="primary">Aceptar</button>
-      <button type="button" (click)="cancelar()" mat-flat-button color="primary">Cancelar</button>
+      <button type="submit" mat-flat-button color="primary">{{btnOkText()}}</button>
+      <button type="button" (click)="cancelar()" mat-flat-button color="primary">{{btnCancelText()}}</button>
     </div>
   </form>
 }

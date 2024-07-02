@@ -1,7 +1,7 @@
 import { Component, effect, inject, input, output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldAppearance, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
@@ -17,9 +17,6 @@ import { DynamicFormService, IFormStructure, IOption } from './dynamic-form.serv
 import { SelectionRequiredValidator, CuitValidator, CBUValidator, CVUValidator } from './dynamic-form.validators';
 import { DatetimerangeComponent } from '../datetimerange/datetimerange.component';
 import { MtxDatetimepicker, MtxDatetimepickerInput, MtxDatetimepickerToggle } from '@ng-matero/extensions/datetimepicker';
-import { DateAdapter } from '@angular/material/core';
-import { CustomDateTimeAdapter } from '../adapters/customDateTimeAdapter';
-import { provideNativeDatetimeAdapter } from '@ng-matero/extensions/core';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -42,10 +39,6 @@ import { provideNativeDatetimeAdapter } from '@ng-matero/extensions/core';
     MtxDatetimepickerInput,
     MtxDatetimepickerToggle,
   ],
-  providers: [
-    provideNativeDatetimeAdapter(),
-    { provide: DateAdapter, useClass: CustomDateTimeAdapter }
-  ],
   templateUrl: './dynamic-form.component.html',
   styleUrl: './dynamic-form.component.scss'
 })
@@ -60,6 +53,12 @@ export class DynamicFormComponent {
   initialData = input<object | undefined>({},{alias: 'initialData'});
 
   urlApi = input<string>('', {alias: 'urlApi'});
+
+  appearance = input<MatFormFieldAppearance>('fill', {alias: 'appearance'});
+
+  btnOkText = input<string>('Aceptar', {alias: 'btnOkText'});
+
+  btnCancelText = input<string>('Cancelar', {alias: 'btnCancelText'});
 
   dataResult = output<any>({alias: 'submitForm'});
 

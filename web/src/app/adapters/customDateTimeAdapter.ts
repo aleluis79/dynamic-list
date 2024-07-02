@@ -19,7 +19,7 @@ export class CustomDateTimeAdapter extends NativeDateAdapter {
       const hour = Number(value.slice(11, 13));
       const min = Number(value.slice(14, 16));
 
-      console.log(date, month, year, hour, min)
+      //console.log(date, month, year, hour, min)
 
       return new Date(year, month, date, hour, min);
     }
@@ -34,11 +34,13 @@ export class CustomDateTimeAdapter extends NativeDateAdapter {
     date = new Date(Date.UTC(
     date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(),
     date.getMinutes(), date.getSeconds(), date.getMilliseconds()));
-    //displayFormat = Object.assign({}, displayFormat, { timeZone: 'utc' });
-    displayFormat = Object.assign({day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'}, { }, { timeZone: 'utc' });
+
+    displayFormat = Object.assign({day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false}, { }, { timeZone: 'utc' });
 
     const dtf = new Intl.DateTimeFormat(this.locale, displayFormat);
-    return dtf.format(date).replace(/[\u200e\u200f]/g, '');
+    let formattedDate = dtf.format(date).replace(/[\u200e\u200f]/g, '').replace(",", "");
+    if (formattedDate.includes('00:00')) formattedDate = formattedDate.replace(' 00:00', '');
+    return formattedDate
   }
 
 }

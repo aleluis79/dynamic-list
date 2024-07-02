@@ -2,14 +2,14 @@
 
     <input type="hidden" [formControlName]="this.control()" />
 
-    <mat-form-field>
+    <mat-form-field [appearance]="this.appearance()">
         <mat-label>Desde</mat-label>
         <mtx-datetimepicker #datetimePickerStart type="datetime" mode="portrait" />
         <input [mtxDatetimepicker]="datetimePickerStart" [formControl]="start" matInput (dateChange)="selected()" (dateInput)="selected()">
         <mtx-datetimepicker-toggle [for]="datetimePickerStart" matSuffix></mtx-datetimepicker-toggle>
     </mat-form-field>
     &nbsp;
-    <mat-form-field>
+    <mat-form-field [appearance]="this.appearance()">
         <mat-label>Hasta</mat-label>
         <mtx-datetimepicker #datetimePickerEnd type="datetime" mode="portrait"  />
         <input [mtxDatetimepicker]="datetimePickerEnd" [formControl]="end"  matInput (dateChange)="selected()" (dateInput)="selected()">

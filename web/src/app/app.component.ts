@@ -487,7 +487,7 @@ export class AppComponent {
       "type": "date",
       "label": "Fecha",
       "name": "fecha",
-      "value": "1979-10-17T00:00:00",
+      "value": "1979-10-17T03:00:00.000Z",
       "validations": [
         {
           "validator": "required",
@@ -561,7 +561,7 @@ export class AppComponent {
       type: "datetimerange",
       label: "Fecha y hora",
       name: "datetime",
-      value: {"start":"2024-07-01T03:00:00.000Z","end":"2024-07-02T03:00:00.000Z"},
+      value: {"start":"2024-07-01T11:00:00.000Z","end":"2024-07-02T17:00:00.000Z"},
       validations: [
         {
           validator: "required",
