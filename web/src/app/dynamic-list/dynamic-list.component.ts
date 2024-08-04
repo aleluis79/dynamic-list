@@ -42,6 +42,8 @@ export class DynamicListComponent {
 
   withCheck = input<boolean>(false, {alias: 'withCheck'})
 
+  editable = input<boolean>(false, {alias: 'editable'})
+
   controlCheck = false
 
   data?: any = []
@@ -75,7 +77,7 @@ export class DynamicListComponent {
   getValueDescription(item: any, key: string) {
     let value = item[key]
     if (value && typeof value === 'object' && value['start'] && value['end']) {
-      value = this.datePipe.transform(value['start'],'dd/MM/yyyy') + " - " + this.datePipe.transform(value['end'],'dd/MM/yyyy')
+      value = this.datePipe.transform(value['start'],'dd/MM/yyyy HH:mm') + " - " + this.datePipe.transform(value['end'],'dd/MM/yyyy HH:mm')
     } else if (value && typeof value === 'object') {
       return ''
     }

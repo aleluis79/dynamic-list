@@ -1,11 +1,15 @@
 @if (this.formStructure() !== undefined && this.formStructure().length > 0) {
   <section class="container">
-    @if(this.withCheck()) {
+    @if(this.withCheck() && this.editable()) {
       <p><mat-checkbox [checked]="controlCheck" (change)="changeCheck($event)">{{ label() }}</mat-checkbox></p>
+    } @else if (!this.editable()) {
+      <label>{{ label() }}</label>
     }
     @if (controlCheck || !this.withCheck()) {
-      <div [ngClass]="{'list-container': this.withCheck()}">
-        <button type="button" mat-icon-button (click)="createItem()"><mat-icon>add</mat-icon></button>
+      <div [ngClass]="{'list-container': this.withCheck() && this.editable(), 'list-container-readonly': !this.editable()}">
+        @if (this.editable()) {
+          <button type="button" mat-icon-button (click)="createItem()"><mat-icon>add</mat-icon></button>
+        }
         <table>
           @for (item of this.items(); track index; let index = $index) {
             <tr>
@@ -19,10 +23,12 @@
                 </td>
               }
               <td>
-                <div>
-                  <button type="button" mat-icon-button (click)="editarItem(item)"><mat-icon>edit</mat-icon></button>
-                  <button type="button" mat-icon-button (click)="removeItem(item)"><mat-icon>delete</mat-icon></button>
-                </div>
+                @if (this.editable()) {
+                  <div>
+                    <button type="button" mat-icon-button (click)="editarItem(item)"><mat-icon>edit</mat-icon></button>
+                    <button type="button" mat-icon-button (click)="removeItem(item)"><mat-icon>delete</mat-icon></button>
+                  </div>
+                }
               </td>
             </tr>
           }

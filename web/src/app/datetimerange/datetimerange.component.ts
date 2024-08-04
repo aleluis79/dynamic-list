@@ -24,14 +24,17 @@ export class DatetimerangeComponent {
 
   control = input.required<string>()
 
+  label = input<string>('', {alias: 'label'})
+
+  editable = input<boolean>(false, {alias: 'editable'})
+
   formGroup = model.required<FormGroup>()
   
   appearance = input<MatFormFieldAppearance>('fill', {alias: 'appearance'})
 
-  start = new FormControl();
+  start = new FormControl()
 
-  end = new FormControl();
-
+  end = new FormControl()
 
   constructor() {
     effect(() => {

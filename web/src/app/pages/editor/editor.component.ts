@@ -9,6 +9,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
     selector: 'app-editor',
@@ -22,6 +23,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
         MatSelectModule,
         MatButtonModule,
         MatIconModule,
+        MatCheckboxModule,
         ReactiveFormsModule,
         DynamicFormComponent,
         JsonPipe,
@@ -43,6 +45,8 @@ export default class EditorComponent {
   preview = true;
 
   jsonEdit = false;
+
+  editable = true;
 
 
   get dataValue () {

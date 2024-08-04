@@ -4,145 +4,220 @@
       <div class="example-container">
 
         @if (['text', 'number', 'email', 'password'].includes(control.type)) {
-          <mat-form-field [appearance]="this.appearance()">
-            <mat-label>{{control.label}}</mat-label>
-            <input matInput
-                  placeholder="{{control.label}}"
-                  [type]="control.type"
-                  [formControlName]="control.name"
-                  [required]="isRequired(control)"
-                  [mask]="control.mask">
-            @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
-              <mat-error>{{getErrorMessage(control)}}</mat-error>
-            }
-          </mat-form-field>
+          @if (editable()) {
+            <mat-form-field [appearance]="this.appearance()">
+              <mat-label>{{control.label}}</mat-label>
+              <input matInput
+                    placeholder="{{control.label}}"
+                    [type]="control.type"
+                    [formControlName]="control.name"
+                    [required]="isRequired(control)"
+                    [mask]="control.mask">
+              @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
+                <mat-error>{{getErrorMessage(control)}}</mat-error>
+              }
+            </mat-form-field>
+          } @else {
+            <div class="pnl-disabled">
+              <label>{{control.label}}</label>
+              @if (control.type === 'password') {
+                <div>******</div>
+              } @else if (control.mask) {
+                <div>{{control.value | mask: control.mask}}</div>
+              } @else {
+                <div>{{control.value}}</div>
+              }
+            </div>
+          }
         }
 
         @if (['textarea'].includes(control.type)) {
-          <mat-form-field [appearance]="this.appearance()">
-            <mat-label>{{control.label}}</mat-label>
-            <textarea matInput
-                  rows="3"
-                  placeholder="{{control.label}}"
-                  [type]="control.type"
-                  [formControlName]="control.name"
-                  [required]="isRequired(control)"></textarea>
-            @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
-              <mat-error>{{getErrorMessage(control)}}</mat-error>
-            }
-          </mat-form-field>
+          @if (editable()) {
+            <mat-form-field [appearance]="this.appearance()">
+              <mat-label>{{control.label}}</mat-label>
+              <textarea matInput
+                    rows="3"
+                    placeholder="{{control.label}}"
+                    [type]="control.type"
+                    [formControlName]="control.name"
+                    [required]="isRequired(control)"></textarea>
+              @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
+                <mat-error>{{getErrorMessage(control)}}</mat-error>
+              }
+            </mat-form-field>
+          } @else {
+            <div class="pnl-disabled">
+              <label>{{control.label}}</label>
+              <pre>{{control.value}}</pre>
+            </div>
+          }
         }
 
         @if (['select'].includes(control.type)) {
-          <mat-form-field [appearance]="this.appearance()">
-            <mat-label>{{control.label}}</mat-label>
-            <mat-select [formControlName]="control.name" [required]="isRequired(control)">
-              <mat-option value="">Seleccione</mat-option>
-              @for (option of control.options; track option.label) {
-                <mat-option [value]="option.value">{{option.label}}</mat-option>
+          @if (editable()) {
+            <mat-form-field [appearance]="this.appearance()">
+              <mat-label>{{control.label}}</mat-label>
+              <mat-select [formControlName]="control.name" [required]="isRequired(control)">
+                <mat-option value="">Seleccione</mat-option>
+                @for (option of control.options; track option.label) {
+                  <mat-option [value]="option.value">{{option.label}}</mat-option>
+                }
+              </mat-select>
+              @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
+                <mat-error>{{getErrorMessage(control)}}</mat-error>
               }
-            </mat-select>
-            @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
-              <mat-error>{{getErrorMessage(control)}}</mat-error>
-            }
-          </mat-form-field>
+            </mat-form-field>
+          } @else {
+            <div class="pnl-disabled">
+              <label>{{control.label}}</label>
+              <div>{{getSelectedOptionLabel(control)}}</div>
+            </div>
+          }
         }
 
         @if (['radio'].includes(control.type)) {
-          <label id="example-radio-group-label">{{control.label}}</label>
-          <mat-radio-group aria-labelledby="example-radio-group-label" [formControlName]="control.name">
-            @for (option of control.options; track option.label) {
-              <mat-radio-button [value]="option.value">{{option.label}}</mat-radio-button>
+          @if (editable()) {
+            <label id="example-radio-group-label">{{control.label}}</label>
+            <mat-radio-group aria-labelledby="example-radio-group-label" [formControlName]="control.name">
+              @for (option of control.options; track option.label) {
+                <mat-radio-button [value]="option.value">{{option.label}}</mat-radio-button>
+              }
+            </mat-radio-group>
+            @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
+              <mat-error>{{getErrorMessage(control)}}</mat-error>
             }
-          </mat-radio-group>
-          @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
-            <mat-error>{{getErrorMessage(control)}}</mat-error>
+          } @else {
+            <div class="pnl-disabled">
+              <label>{{control.label}}</label>
+              <div>{{getSelectedOptionLabel(control)}}</div>
+            </div>
           }
         }
 
         @if (['date'].includes(control.type)) {
-          <mat-form-field [appearance]="this.appearance()">
-            <mat-label>{{control.label}}</mat-label>
-            <input matInput [matDatepicker]="picker" [formControlName]="control.name">
-            <mat-hint>DD/MM/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
-              <mat-error>{{getErrorMessage(control)}}</mat-error>
-            }
-          </mat-form-field>
+          @if (editable()) {
+            <mat-form-field [appearance]="this.appearance()">
+              <mat-label>{{control.label}}</mat-label>
+              <input matInput [matDatepicker]="picker" [formControlName]="control.name">
+              <mat-hint>DD/MM/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
+                <mat-error>{{getErrorMessage(control)}}</mat-error>
+              }
+            </mat-form-field>
+          } @else {
+            <div class="pnl-disabled">
+              <label>{{control.label}}</label>
+              <div>{{control.value | date: 'dd/MM/yyyy'}}</div>
+            </div>
+          }
         }
 
         @if(['datetimerange'].includes(control.type)) {
-          <app-datetimerange [formGroup]="dynamicForm" [control]="control.name" [appearance]="this.appearance()" />
+          <app-datetimerange 
+            [formGroup]="dynamicForm" 
+            [control]="control.name" 
+            [appearance]="this.appearance()" 
+            [editable]="this.editable()"
+            [label]="control.label"
+            />
         }
 
         @if (['datetime'].includes(control.type)) {
-          <mat-form-field [appearance]="this.appearance()">
-            <mat-label>{{control.label}}</mat-label>
-            <mtx-datetimepicker #datetimePicker type="datetime" mode="portrait" />
-            <input [mtxDatetimepicker]="datetimePicker" [formControlName]="control.name" matInput>
-            <mtx-datetimepicker-toggle [for]="datetimePicker" matSuffix></mtx-datetimepicker-toggle>
-            @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
-              <mat-error>{{getErrorMessage(control)}}</mat-error>
-            }
-          </mat-form-field>
+          @if (editable()) {
+            <mat-form-field [appearance]="this.appearance()">
+              <mat-label>{{control.label}}</mat-label>
+              <mtx-datetimepicker #datetimePicker type="datetime" mode="portrait" />
+              <input [mtxDatetimepicker]="datetimePicker" [formControlName]="control.name" matInput>
+              <mtx-datetimepicker-toggle [for]="datetimePicker" matSuffix></mtx-datetimepicker-toggle>
+              @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
+                <mat-error>{{getErrorMessage(control)}}</mat-error>
+              }
+            </mat-form-field>
+          } @else {
+            <div class="pnl-disabled">
+              <label>{{control.label}}</label>
+              <div>{{control.value | date: 'dd/MM/yyyy HH:mm'}}</div>
+            </div>
+          }
         }
 
         @if (['checkbox'].includes(control.type)) {
-          <div class="pnl-checkbox">
-            <p><mat-checkbox [formControlName]="control.name">{{control.label}}</mat-checkbox></p>
-            @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
-              <mat-error>{{getErrorMessage(control)}}</mat-error>
-            }
-          </div>
+          @if (editable()) {
+            <div class="pnl-checkbox">
+              <p><mat-checkbox [formControlName]="control.name">{{control.label}}</mat-checkbox></p>
+              @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
+                <mat-error>{{getErrorMessage(control)}}</mat-error>
+              }
+            </div>
+          } @else {
+            <div class="pnl-disabled">
+              <label>{{control.label}}</label>
+              <div>{{control.value == true ? 'Si' : 'No'}}</div>
+            </div>
+          }
         }
 
 
         @if (['autocomplete'].includes(control.type)) {
-          <mat-form-field class="example-full-width" [appearance]="this.appearance()">
-            <mat-label>{{control.label}}</mat-label>
-            <input type="text"
-                    placeholder="Buscar..."
-                    aria-label="control.label"
-                    matInput
-                    [formControlName]="control.name"
-                    [matAutocomplete]="auto"
-                    onfocus="this.select()">
-            <mat-autocomplete autoActiveFirstOption autoSelectActiveOption #auto="matAutocomplete" [displayWith]="autocompleteDisplay">
-              @for (option of control.options; track option.label) {
-                <mat-option [value]="option">
-                  {{option.label}}
-                </mat-option>
+          @if (editable()) {
+            <mat-form-field class="example-full-width" [appearance]="this.appearance()">
+              <mat-label>{{control.label}}</mat-label>
+              <input type="text"
+                      placeholder="Buscar..."
+                      aria-label="control.label"
+                      matInput
+                      [formControlName]="control.name"
+                      [matAutocomplete]="auto"
+                      onfocus="this.select()">
+              <mat-autocomplete autoActiveFirstOption autoSelectActiveOption #auto="matAutocomplete" [displayWith]="autocompleteDisplay">
+                @for (option of control.options; track option.label) {
+                  <mat-option [value]="option">
+                    {{option.label}}
+                  </mat-option>
+                }
+              </mat-autocomplete>
+              @if (dynamicForm.get(control.name)?.invalid) {
+                <mat-error>{{getErrorMessage(control)}}</mat-error>
               }
-            </mat-autocomplete>
-            @if (dynamicForm.get(control.name)?.invalid) {
-              <mat-error>{{getErrorMessage(control)}}</mat-error>
-            }
-          </mat-form-field>
+            </mat-form-field>
+          } @else {
+            <div class="pnl-disabled">
+              <label>{{control.label}}</label>
+              <div>{{control.value.label}}</div>
+            </div>
+          }
         }
 
         @if (['daterange'].includes(control.type)) {
-          <mat-form-field [appearance]="this.appearance()">
-            <mat-label>Enter a date range</mat-label>
-            <mat-date-range-input [formGroup]="getRange(control.name)" [rangePicker]="picker">
-              <input matStartDate formControlName="start" placeholder="Start date">
-              <input matEndDate formControlName="end" placeholder="End date">
-            </mat-date-range-input>
-            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
-
-            @if (getRange(control.name).controls['start'].hasError('matStartDateInvalid')) {
-              <mat-error>Fecha inicio inválida</mat-error>
-            }
-            @if (getRange(control.name).controls['end'].hasError('matEndDateInvalid')) {
-              <mat-error>Fecha fin inválida</mat-error>
-            }
-            @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
-              <mat-error>{{getErrorMessage(control)}}</mat-error>
-            }
-          </mat-form-field>
+          @if (editable()) {
+            <mat-form-field [appearance]="this.appearance()">
+              <mat-label>Enter a date range</mat-label>
+              <mat-date-range-input [formGroup]="getRange(control.name)" [rangePicker]="picker">
+                <input matStartDate formControlName="start" placeholder="Start date">
+                <input matEndDate formControlName="end" placeholder="End date">
+              </mat-date-range-input>
+              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+  
+              @if (getRange(control.name).controls['start'].hasError('matStartDateInvalid')) {
+                <mat-error>Fecha inicio inválida</mat-error>
+              }
+              @if (getRange(control.name).controls['end'].hasError('matEndDateInvalid')) {
+                <mat-error>Fecha fin inválida</mat-error>
+              }
+              @if (dynamicForm.get(control.name)?.invalid && dynamicForm.get(control.name)?.touched) {
+                <mat-error>{{getErrorMessage(control)}}</mat-error>
+              }
+            </mat-form-field>
+          } @else {
+            <div class="pnl-disabled">
+              <label>{{control.label}}</label>
+              <div>{{control.value.start | date: 'dd/MM/yyyy'}} - {{control.value.end | date: 'dd/MM/yyyy'}}</div>
+            </div>
+          }
         }
 
 
@@ -153,6 +228,7 @@
               [initialData]="getInitialDataForList(control.name)" 
               [formStructure]="control.form ?? []" 
               [withCheck]="control.withCheck ?? false"
+              [editable]="this.editable()"
               label="{{control.label}}" 
               />
           }
@@ -160,9 +236,11 @@
 
       </div>
     }
-    <div class="button-container">
-      <button type="submit" mat-flat-button color="primary">{{btnOkText()}}</button>
-      <button type="button" (click)="cancelar()" mat-flat-button color="primary">{{btnCancelText()}}</button>
-    </div>
+    @if (this.editable()) {
+      <div class="button-container">
+        <button type="submit" mat-flat-button color="primary">{{btnOkText()}}</button>
+        <button type="button" (click)="cancelar()" mat-flat-button color="primary">{{btnCancelText()}}</button>
+      </div>
+    }
   </form>
 }

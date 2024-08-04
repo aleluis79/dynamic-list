@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { HttpClient } from '@angular/common/http';
 import { debounceTime, distinctUntilChanged, switchMap, of, Subject, takeUntil, catchError } from 'rxjs';
-import { NgxMaskDirective } from 'ngx-mask';
+import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { DynamicListComponent } from '../dynamic-list/dynamic-list.component';
 import { DynamicFormService, IFormStructure, IOption } from './dynamic-form.service';
 import { SelectionRequiredValidator, CuitValidator, CBUValidator, CVUValidator } from './dynamic-form.validators';
@@ -38,6 +38,7 @@ import { MtxDatetimepicker, MtxDatetimepickerInput, MtxDatetimepickerToggle } fr
     MtxDatetimepicker,
     MtxDatetimepickerInput,
     MtxDatetimepickerToggle,
+    NgxMaskPipe
   ],
   templateUrl: './dynamic-form.component.html',
   styleUrl: './dynamic-form.component.scss'
@@ -59,6 +60,8 @@ export class DynamicFormComponent {
   btnOkText = input<string>('Aceptar', {alias: 'btnOkText'});
 
   btnCancelText = input<string>('Cancelar', {alias: 'btnCancelText'});
+
+  editable = input<boolean>(true, {alias: 'editable'});
 
   dataResult = output<any>({alias: 'submitForm'});
 
@@ -153,7 +156,7 @@ export class DynamicFormComponent {
               formGroup[control.name] = [control.value == undefined ? '' : new Date(control.value), controlValidators];
           } else {
               // General case for most controls...
-              formGroup[control.name] = [control.value == undefined ? '' : control.value, controlValidators];
+              formGroup[control.name] = [{ value: control.value == undefined ? '' : control.value, disabled: false}, controlValidators];
           }
 
         });
@@ -239,6 +242,17 @@ export class DynamicFormComponent {
   autocompleteDisplay(option: IOption): string {
     return option ? option.label : '';
   }
+
+
+  getSelectedOptionLabel(control: IFormStructure): string {
+    const options = control.options;
+    if (options && options.length > 0) {
+      const selectedOption = options.find(option => option.value === control.value);
+      return selectedOption ? selectedOption.label : '';
+    }
+    return '';
+  }
+
 
 }
 

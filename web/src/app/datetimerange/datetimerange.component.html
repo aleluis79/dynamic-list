@@ -1,25 +1,35 @@
 <div class="container" [formGroup]="this.formGroup()">
-
-    <input type="hidden" [formControlName]="this.control()" />
-
-    <mat-form-field [appearance]="this.appearance()">
-        <mat-label>Desde</mat-label>
-        <mtx-datetimepicker #datetimePickerStart type="datetime" mode="portrait" />
-        <input [mtxDatetimepicker]="datetimePickerStart" [formControl]="start" matInput (dateChange)="selected()" (dateInput)="selected()">
-        <mtx-datetimepicker-toggle [for]="datetimePickerStart" matSuffix></mtx-datetimepicker-toggle>
-    </mat-form-field>
-    &nbsp;
-    <mat-form-field [appearance]="this.appearance()">
-        <mat-label>Hasta</mat-label>
-        <mtx-datetimepicker #datetimePickerEnd type="datetime" mode="portrait"  />
-        <input [mtxDatetimepicker]="datetimePickerEnd" [formControl]="end"  matInput (dateChange)="selected()" (dateInput)="selected()">
-        <mtx-datetimepicker-toggle [for]="datetimePickerEnd" matSuffix></mtx-datetimepicker-toggle>
-    </mat-form-field>
-
-    <div>
-        @if (hasError()) {
-            <mat-error>Fecha inválida</mat-error>
-        }
-    </div>
+    @if (this.editable()) {
+        <input type="hidden" [formControlName]="this.control()" />
+    
+        <mat-form-field [appearance]="this.appearance()">
+            <mat-label>Desde</mat-label>
+            <mtx-datetimepicker #datetimePickerStart type="datetime" mode="portrait" />
+            <input [mtxDatetimepicker]="datetimePickerStart" [formControl]="start" matInput (dateChange)="selected()" (dateInput)="selected()">
+            <mtx-datetimepicker-toggle [for]="datetimePickerStart" matSuffix></mtx-datetimepicker-toggle>
+        </mat-form-field>
+        &nbsp;
+        <mat-form-field [appearance]="this.appearance()">
+            <mat-label>Hasta</mat-label>
+            <mtx-datetimepicker #datetimePickerEnd type="datetime" mode="portrait"  />
+            <input [mtxDatetimepicker]="datetimePickerEnd" [formControl]="end"  matInput (dateChange)="selected()" (dateInput)="selected()">
+            <mtx-datetimepicker-toggle [for]="datetimePickerEnd" matSuffix></mtx-datetimepicker-toggle>
+        </mat-form-field>
+    
+        <div>
+            @if (hasError()) {
+                <mat-error>Fecha inválida</mat-error>
+            }
+        </div>
+    } @else {
+        <div class="pnl-disabled">
+            <label>{{ this.label() }}</label>
+            <div>
+                <span>{{start.value | date: 'dd/MM/yyyy HH:mm'}}</span>
+                <span> - </span>
+                <span>{{end.value | date: 'dd/MM/yyyy HH:mm'}}</span>
+            </div>
+        </div>
+    }
 
 </div>

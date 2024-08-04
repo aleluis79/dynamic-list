@@ -46,7 +46,8 @@ export class AppComponent {
   //initialData = {"otros1":true,"otros2":false,"movimientos":[{"alias":"ale.luis.123","fechaAlias":{"start":"2024-06-15T03:00:00.000Z","end":"2024-06-16T03:00:00.000Z"}}],"frutas":[{"fruta":"333333333"},{"fruta":"444444444"}]}
   initialData = {}
   //initialData = {"fechaConHoraRango": {"start":"2024-07-01T03:00:00.000Z","end":"2024-07-02T03:00:00.000Z"}}
-  
+  //initialData = {"nombre":"Alejandro","clave":"123","edad":"18","email":"ale@luis","observaciones":"Esto es \nuna observación\nde dos lineas!!!","terminos":true,"genero":"M","pais":"AR","autocompletado":{"label":"Argentina","value":"AR"},"fecha":"1985-10-11T03:00:00.000Z","daterange":{"start":"2024-06-20T03:00:00.000Z","end":"2024-06-22T03:00:00.000Z"},"cuit":"00000000000","cbu":"0000000000000000000000","datetime":{"start":"2024-07-01T11:00:00.000Z","end":"2024-07-02T17:00:00.000Z"},"listas":[{"item":"aaa","daterange":{"start":"2024-08-04T19:13:00.000Z","end":"2024-08-04T19:13:00.000Z"}},{"item":"bbb123","daterange":{"start":"2024-08-04T19:13:00.000Z","end":"2024-08-04T19:13:00.000Z"}}]}
+
   
   dynamicFormService = inject(DynamicFormService)
 
@@ -528,7 +529,13 @@ export class AppComponent {
               "message": "El item es requerido"
             }
           ]
-        }
+        },
+        {
+          "type": "datetimerange",
+          "label": "Rango de fechas",
+          "name": "daterange",
+          "value": ""
+        }  
       ]
     },
     {
