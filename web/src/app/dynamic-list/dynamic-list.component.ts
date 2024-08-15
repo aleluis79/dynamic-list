@@ -77,11 +77,17 @@ export class DynamicListComponent {
   getValueDescription(item: any, key: string) {
     let value = item[key]
     if (value && typeof value === 'object' && value['start'] && value['end']) {
-      value = this.datePipe.transform(value['start'],'dd/MM/yyyy HH:mm') + " - " + this.datePipe.transform(value['end'],'dd/MM/yyyy HH:mm')
+      return this.datePipe.transform(value['start'],'dd/MM/yyyy HH:mm') + " - " + this.datePipe.transform(value['end'],'dd/MM/yyyy HH:mm')
     } else if (value && typeof value === 'object') {
       return ''
+    } else {
+      var aux = this.getLabel(key, value)
+      if (aux !== undefined) {
+        return aux
+      } else {
+        return value
+      }
     }
-    return value
   }
 
   getMask(key: string): string {
@@ -209,5 +215,9 @@ export class DynamicListComponent {
     this.data = undefined
 
   }  
+
+  getLabel(key: string, value: string) {
+    return this.formStructure().filter(c => c.name === key)[0].options?.filter(o => o.value === value)[0].label
+  }
 
 }
